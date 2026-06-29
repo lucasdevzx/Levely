@@ -16,6 +16,8 @@ public class WorkoutApplicationDetail {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    // TODO: Find need attributes for details
+    @OneToOne
+    private Workout workout;
 
+    // TODO: Find need attributes for details
 }

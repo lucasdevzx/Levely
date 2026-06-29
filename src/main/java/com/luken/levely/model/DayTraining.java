@@ -1,6 +1,7 @@
 package com.luken.levely.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,10 +10,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "day_trainings")
+@AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class DayTraining {
@@ -43,4 +46,13 @@ public class DayTraining {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    private TrainingPlanner trainingPlanner;
+
+    @OneToMany(mappedBy = "dayTraining")
+    private List<DayTrainingLog> dayTrainingLogs;
+
+    @OneToMany(mappedBy = "dayTraining")
+    private List<Workout> workouts;
 }

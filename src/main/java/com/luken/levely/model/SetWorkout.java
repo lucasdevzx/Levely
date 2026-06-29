@@ -15,4 +15,7 @@ public abstract class SetWorkout {
 
     @Column(name = "order_index", nullable = false)
     Integer order;
+
+    @ManyToOne
+    WorkoutLog workoutLog;
 }

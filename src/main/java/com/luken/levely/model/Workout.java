@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -36,5 +37,9 @@ public class Workout {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    private DayTraining dayTraining;
 
+    @OneToMany(mappedBy = "workout")
+    private List<WorkoutLog> workoutLogs;
 }
