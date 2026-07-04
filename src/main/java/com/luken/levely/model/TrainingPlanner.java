@@ -12,17 +12,21 @@ import org.springframework.stereotype.Component;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "training_planners")
-@NoArgsConstructor
-@Data
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class TrainingPlanner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @EqualsAndHashCode.Include
     private UUID id;
 
     @NonNull
@@ -47,10 +51,10 @@ public class TrainingPlanner {
     private LocalDate endDate;
 
     @Column(name = "total_weeks")
-    private Integer totalWeeks;
+    private int totalWeeks;
 
     @Column(name = "current_week")
-    private Integer currentWeek;
+    private int currentWeek;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -66,20 +70,46 @@ public class TrainingPlanner {
     @OneToMany(mappedBy = "trainingPlanner", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DayTraining> dayTrainings;
 
-    // TODO: Create method for create training planner with business rule of date
+    public static TrainingPlanner create(String name, GoalType goalType, LocalDate startDate, LocalDate endDate) {
+        validateDate(startDate, endDate);
+        return new TrainingPlanner(name, goalType, startDate, endDate);
+    }
+
+    public static void validateDate(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("The end date cannot be before the start date.");
+        }
+
+        if (startDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("The start date cannot be before the date now");
+        }
+    }
+
+    public void calculateTotalWeeks() {
+        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+        totalWeeks = (int) Math.ceil((double) totalDays / 7);
+    }
+
+    public void calculateCurrentWeek() {
+        long totalDays = ChronoUnit.DAYS.between(startDate, LocalDate.now());
+        currentWeek = (int) Math.ceil((double) (totalDays + 1) / 7);
+
+        if (currentWeek <= 0) {
+            currentWeek = 1;
+        }
+    }
 
     public void addDayTraining(String name, DayOfWeek dayOfWeek) {
         if (plannerStatus == PlannerStatus.COMPLETED) {
-            throw new InvalidActionException("The planner status does not allow changes");
+            throw new IllegalArgumentException("The planner status does not allow changes");
         }
 
         if (dayTrainings.size() == 7) {
-            throw new InvalidActionException("The planner reached the maximum number of training days.");
+            throw new IllegalArgumentException("The planner reached the maximum number of training days");
         }
 
         DayTraining dayTraining = new DayTraining(name, dayOfWeek);
         dayTraining.associatePlanner(this);
         this.dayTrainings.add(dayTraining);
     }
-
 }

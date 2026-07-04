@@ -27,12 +27,9 @@ public class ConfigTest implements CommandLineRunner {
         TrainingPlannerRequestDTO body = new TrainingPlannerRequestDTO(
                 "Verão",
                 GoalType.HYPERTROPHY,
-                LocalDate.of(2026, 02, 16),
-                LocalDate.of(2026, 03, 20)
+                LocalDate.of(2026, 7, 28),
+                LocalDate.of(2026, 8, 4)
         );
         trainingPlannerService.createPlanner(body);
-
-
-
     }
 }

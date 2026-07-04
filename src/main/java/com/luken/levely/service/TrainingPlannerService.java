@@ -10,6 +10,8 @@ import com.luken.levely.repository.TrainingPlannerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -24,14 +26,33 @@ public class TrainingPlannerService {
     private final TrainingPlannerRepository trainingPlannerRepository;
     private final TrainingPlannerMapper trainingPlannerMapper;
 
+    public Page<TrainingPlanner> findAll(int page, int size) {
+        Page<TrainingPlanner> trainingPlanners = trainingPlannerRepository.findAll(PageRequest.of(page, size));
+
+        for (TrainingPlanner trainingPlanner : trainingPlanners) {
+            trainingPlanner.calculateCurrentWeek();
+        }
+        return trainingPlanners;
+    }
+
+    public TrainingPlanner findById(UUID trainingPlannerId) {
+        TrainingPlanner trainingPlanner = trainingPlannerRepository.findById(trainingPlannerId)
+                .orElseThrow(() -> new EntityNotFoundException("Entity training planner not found by id"));
+
+        trainingPlanner.calculateCurrentWeek();
+        return trainingPlanner;
+    }
+
     public TrainingPlanner createPlanner(TrainingPlannerRequestDTO body) {
         TrainingPlanner trainingPlanner = trainingPlannerMapper.toEntity(body);
+        trainingPlanner.calculateTotalWeeks();
+        trainingPlanner.calculateCurrentWeek();
         return trainingPlannerRepository.save(trainingPlanner);
     }
 
     public DayTraining addDayTraining(UUID trainingPlannerId, DayTrainingDefaultRequestDTO body) {
         TrainingPlanner trainingPlanner = trainingPlannerRepository.findById(trainingPlannerId)
-                .orElseThrow(() -> new EntityNotFoundException("Entity training planner not found by id"));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity training planner not found by id: " + trainingPlannerId)));
 
         trainingPlanner.addDayTraining(body.name(), body.dayOfWeek());
         trainingPlannerRepository.save(trainingPlanner);

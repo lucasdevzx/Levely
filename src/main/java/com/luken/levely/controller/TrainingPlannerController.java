@@ -10,6 +10,7 @@ import com.luken.levely.model.DayTraining;
 import com.luken.levely.model.TrainingPlanner;
 import com.luken.levely.service.TrainingPlannerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,6 +26,18 @@ public class TrainingPlannerController {
     private final TrainingPlannerService trainingPlannerService;
     private final TrainingPlannerMapper trainingPlannerMapper;
     private final DayTrainingMapper dayTrainingMapper;
+
+    @GetMapping
+    public ResponseEntity<Page<TrainingPlannerResponseDTO>> findAll(@RequestParam int page, @RequestParam int size) {
+        Page<TrainingPlanner> trainingPlanners = trainingPlannerService.findAll(page, size);
+        return ResponseEntity.ok().body(trainingPlanners.map(trainingPlannerMapper::toDTO));
+    }
+
+    @GetMapping(value = "/{trainingPlannerId}")
+    public ResponseEntity<TrainingPlannerResponseDTO> findById(@PathVariable UUID trainingPlannerId) {
+        TrainingPlanner trainingPlanner = trainingPlannerService.findById(trainingPlannerId);
+        return ResponseEntity.ok().body(trainingPlannerMapper.toDTO(trainingPlanner));
+    }
 
     @PostMapping
     public ResponseEntity<TrainingPlannerResponseDTO> createPlanner(@RequestBody TrainingPlannerRequestDTO body) {

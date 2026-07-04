@@ -8,8 +8,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface TrainingPlannerMapper {
 
-    TrainingPlanner toEntity(TrainingPlannerRequestDTO body);
+    default TrainingPlanner toEntity(TrainingPlannerRequestDTO body) {
+        return TrainingPlanner.create(body.name(), body.goalType(), body.startDate(), body.endDate());
+    }
 
     TrainingPlannerResponseDTO toDTO(TrainingPlanner entity);
-
 }

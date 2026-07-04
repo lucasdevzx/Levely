@@ -15,8 +15,8 @@ public record TrainingPlannerResponseDTO(
         PlannerStatus plannerStatus,
         LocalDate startDate,
         LocalDate endDate,
-        Integer totalWeeks,
-        Integer currentWeek,
+        int totalWeeks,
+        int currentWeek,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
