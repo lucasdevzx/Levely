@@ -1,9 +1,7 @@
 package com.luken.levely.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,8 +13,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "day_trainings")
-@AllArgsConstructor
+@NoArgsConstructor
 @RequiredArgsConstructor
+@Data
 @EqualsAndHashCode
 public class DayTraining {
 
@@ -24,20 +23,23 @@ public class DayTraining {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @NonNull
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @Column(name = "notes")
     private String notes;
 
+    @NonNull
     @Column(name = "day_of_week", nullable = false)
     private DayOfWeek dayOfWeek;
 
-    @Column(name = "week_number", nullable = false)
-    private int weekNumber;
+    // TODO: Create method for calculate week number in training planner. Add nullable after create method for calculate
+    @Column(name = "week_number")
+    private Integer weekNumber;
 
     @Column(name = "quantity_workout")
-    private int quantityWorkout;
+    private Integer quantityWorkout;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -55,4 +57,8 @@ public class DayTraining {
 
     @OneToMany(mappedBy = "dayTraining")
     private List<Workout> workouts;
+
+    public void associatePlanner(TrainingPlanner trainingPlanner) {
+        this.trainingPlanner = trainingPlanner;
+    }
 }
