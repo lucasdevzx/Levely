@@ -1,6 +1,6 @@
 package com.luken.levely.controller;
 
-import com.luken.levely.dto.request.DayTrainingDefaultRequestDTO;
+import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerStatusRequestDTO;
 import com.luken.levely.dto.response.DayTrainingResponseDTO;
 import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
@@ -51,8 +51,8 @@ public class TrainingPlannerController {
         return ResponseEntity.created(uri).body(trainingPlannerMapper.toDTO(trainingPlanner));
     }
 
-    @PostMapping(value = "/{trainingPlannerId}/day-trainings")
-    public ResponseEntity<DayTrainingResponseDTO> addDayTraining(@PathVariable UUID trainingPlannerId, @RequestBody DayTrainingDefaultRequestDTO body) {
+    @PostMapping(value = "/{trainingPlannerId}/daytrainings")
+    public ResponseEntity<DayTrainingResponseDTO> addDayTraining(@PathVariable UUID trainingPlannerId, @RequestBody DayTrainingRequestDTO body) {
         DayTraining dayTraining = trainingPlannerService.addDayTraining(trainingPlannerId, body);
 
         URI uri = ServletUriComponentsBuilder.fromPath("/{DayTrainingId}")

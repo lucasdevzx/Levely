@@ -1,6 +1,7 @@
 package com.luken.levely.model;
 
 import com.luken.levely.common.exception.InvalidActionException;
+import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerStatusRequestDTO;
 import com.luken.levely.enums.GoalType;
@@ -73,12 +74,12 @@ public class TrainingPlanner {
     @OneToMany(mappedBy = "trainingPlanner", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DayTraining> dayTrainings;
 
-    public static TrainingPlanner create(String name, GoalType goalType, LocalDate startDate, LocalDate endDate) {
-        validateDate(startDate, endDate);
-        return new TrainingPlanner(name, goalType, startDate, endDate);
+    public static TrainingPlanner create(TrainingPlannerRequestDTO body) {
+        validateDate(body.startDate(), body.endDate());
+        return new TrainingPlanner(body.name(), body.goalType(), body.startDate(), body.endDate());
     }
 
-    public void addDayTraining(String name, DayOfWeek dayOfWeek) {
+    public void addDayTraining(DayTrainingRequestDTO body) {
         if (plannerStatus == PlannerStatus.COMPLETED || plannerStatus == PlannerStatus.PAUSED) {
             throw new IllegalArgumentException("The planner status does not allow changes");
         }
@@ -87,7 +88,7 @@ public class TrainingPlanner {
             throw new IllegalArgumentException("The planner reached the maximum number of training days");
         }
 
-        DayTraining dayTraining = new DayTraining(name, dayOfWeek);
+        DayTraining dayTraining = DayTraining.create(body);
         dayTraining.associatePlanner(this);
         this.dayTrainings.add(dayTraining);
     }

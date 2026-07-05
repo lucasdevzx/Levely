@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 public interface TrainingPlannerMapper {
 
     default TrainingPlanner toEntity(TrainingPlannerRequestDTO body) {
-        return TrainingPlanner.create(body.name(), body.goalType(), body.startDate(), body.endDate());
+        return TrainingPlanner.create(body);
     }
 
     TrainingPlannerResponseDTO toDTO(TrainingPlanner entity);

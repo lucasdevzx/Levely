@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record DayTrainingResponseDTO(
+        UUID id,
         String name,
         String notes,
         DayOfWeek dayOfWeek,
-        Integer weekNumber,
-        Integer quantityWorkout,
+        int quantityWorkout,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         UUID trainingPlannerId

@@ -1,5 +1,6 @@
 package com.luken.levely.model;
 
+import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,20 +14,22 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "day_trainings")
-@NoArgsConstructor
-@RequiredArgsConstructor
-@Data
-@EqualsAndHashCode
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class DayTraining {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @EqualsAndHashCode.Include
     private UUID id;
 
     @NonNull
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
+    @NonNull
     @Column(name = "notes")
     private String notes;
 
@@ -34,12 +37,8 @@ public class DayTraining {
     @Column(name = "day_of_week", nullable = false)
     private DayOfWeek dayOfWeek;
 
-    // TODO: Create method for calculate week number in training planner. Add nullable after create method for calculate
-    @Column(name = "week_number")
-    private Integer weekNumber;
-
     @Column(name = "quantity_workout")
-    private Integer quantityWorkout;
+    private int quantityWorkout = 0;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -60,5 +59,20 @@ public class DayTraining {
 
     public void associatePlanner(TrainingPlanner trainingPlanner) {
         this.trainingPlanner = trainingPlanner;
+    }
+
+    public static DayTraining create(DayTrainingRequestDTO body) {
+        return new DayTraining(body.name(), body.notes(), body.dayOfWeek());
+    }
+
+    public void update(DayTrainingRequestDTO body) {
+        name = body.name();
+        notes = body.notes();
+        dayOfWeek = body.dayOfWeek();
+        calculateQuantityWorkout();
+    }
+
+    public void calculateQuantityWorkout() {
+        quantityWorkout = workouts.size();
     }
 }
