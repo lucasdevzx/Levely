@@ -2,6 +2,7 @@ package com.luken.levely.service;
 
 import com.luken.levely.dto.request.DayTrainingDefaultRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
+import com.luken.levely.dto.request.TrainingPlannerStatusRequestDTO;
 import com.luken.levely.enums.GoalType;
 import com.luken.levely.mapper.TrainingPlannerMapper;
 import com.luken.levely.model.DayTraining;
@@ -37,7 +38,7 @@ public class TrainingPlannerService {
 
     public TrainingPlanner findById(UUID trainingPlannerId) {
         TrainingPlanner trainingPlanner = trainingPlannerRepository.findById(trainingPlannerId)
-                .orElseThrow(() -> new EntityNotFoundException("Entity training planner not found by id"));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity training planner not found by id: " + trainingPlannerId)));
 
         trainingPlanner.calculateCurrentWeek();
         return trainingPlanner;
@@ -59,4 +60,23 @@ public class TrainingPlannerService {
         return trainingPlanner.getDayTrainings().getLast();
     }
 
+    public TrainingPlanner updatePlanner(UUID trainingPlannerId, TrainingPlannerRequestDTO body) {
+        TrainingPlanner trainingPlanner = trainingPlannerRepository.findById(trainingPlannerId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity training planner not found by id: " + trainingPlannerId)));
+
+        trainingPlanner.update(body);
+        return trainingPlannerRepository.save(trainingPlanner);
+    }
+
+    public TrainingPlanner updatePlannerStatus(UUID trainingPlannerId, TrainingPlannerStatusRequestDTO body) {
+        var trainingPlanner = trainingPlannerRepository.findById(trainingPlannerId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity training planner not found by id: " + trainingPlannerId)));
+
+        trainingPlanner.setPlannerStatus(body.plannerStatus());
+        return trainingPlannerRepository.save(trainingPlanner);
+    }
+
+    public void deletePlanner(UUID trainingPlannerId) {
+        trainingPlannerRepository.deleteById(trainingPlannerId);
+    }
 }

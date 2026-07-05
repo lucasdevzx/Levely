@@ -1,6 +1,8 @@
 package com.luken.levely.model;
 
 import com.luken.levely.common.exception.InvalidActionException;
+import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
+import com.luken.levely.dto.request.TrainingPlannerStatusRequestDTO;
 import com.luken.levely.enums.GoalType;
 import com.luken.levely.enums.PlannerStatus;
 import jakarta.persistence.*;
@@ -40,6 +42,7 @@ public class TrainingPlanner {
 
     @Column(name = "planner_status", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Setter
     private PlannerStatus plannerStatus = PlannerStatus.ACTIVE;
 
     @NonNull
@@ -53,7 +56,7 @@ public class TrainingPlanner {
     @Column(name = "total_weeks")
     private int totalWeeks;
 
-    @Column(name = "current_week")
+    @Transient
     private int currentWeek;
 
     @CreationTimestamp
@@ -73,6 +76,32 @@ public class TrainingPlanner {
     public static TrainingPlanner create(String name, GoalType goalType, LocalDate startDate, LocalDate endDate) {
         validateDate(startDate, endDate);
         return new TrainingPlanner(name, goalType, startDate, endDate);
+    }
+
+    public void addDayTraining(String name, DayOfWeek dayOfWeek) {
+        if (plannerStatus == PlannerStatus.COMPLETED || plannerStatus == PlannerStatus.PAUSED) {
+            throw new IllegalArgumentException("The planner status does not allow changes");
+        }
+
+        if (dayTrainings.size() == 7) {
+            throw new IllegalArgumentException("The planner reached the maximum number of training days");
+        }
+
+        DayTraining dayTraining = new DayTraining(name, dayOfWeek);
+        dayTraining.associatePlanner(this);
+        this.dayTrainings.add(dayTraining);
+    }
+
+    public void update(TrainingPlannerRequestDTO body) {
+        validateDate(body.startDate(), body.endDate());
+
+        name = body.name();
+        goalType = body.goalType();
+        startDate = body.startDate();
+        endDate = body.endDate();
+
+        calculateTotalWeeks();
+        calculateCurrentWeek();
     }
 
     public static void validateDate(LocalDate startDate, LocalDate endDate) {
@@ -97,19 +126,5 @@ public class TrainingPlanner {
         if (currentWeek <= 0) {
             currentWeek = 1;
         }
-    }
-
-    public void addDayTraining(String name, DayOfWeek dayOfWeek) {
-        if (plannerStatus == PlannerStatus.COMPLETED) {
-            throw new IllegalArgumentException("The planner status does not allow changes");
-        }
-
-        if (dayTrainings.size() == 7) {
-            throw new IllegalArgumentException("The planner reached the maximum number of training days");
-        }
-
-        DayTraining dayTraining = new DayTraining(name, dayOfWeek);
-        dayTraining.associatePlanner(this);
-        this.dayTrainings.add(dayTraining);
     }
 }
