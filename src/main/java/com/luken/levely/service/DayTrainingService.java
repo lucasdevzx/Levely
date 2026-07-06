@@ -21,7 +21,7 @@ public class DayTrainingService {
         Page<DayTraining> dayTrainings = dayTrainingRepository.findAll(PageRequest.of(page, size));
 
         for (DayTraining dayTraining : dayTrainings) {
-            dayTraining.calculateQuantityWorkout();
+            //dayTraining.calculateQuantityWorkout();
         }
         return dayTrainings;
     }
@@ -30,7 +30,7 @@ public class DayTrainingService {
         var dayTraining = dayTrainingRepository.findById(dayTrainingId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Entity day training not found by id: " + dayTrainingId)));
 
-        dayTraining.calculateQuantityWorkout();
+        //dayTraining.calculateQuantityWorkout();
         return dayTraining;
     }
 

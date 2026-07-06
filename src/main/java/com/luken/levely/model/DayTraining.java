@@ -52,10 +52,7 @@ public class DayTraining {
     private TrainingPlanner trainingPlanner;
 
     @OneToMany(mappedBy = "dayTraining")
-    private List<DayTrainingLog> dayTrainingLogs;
-
-    @OneToMany(mappedBy = "dayTraining")
-    private List<Workout> workouts;
+    private List<DayTrainingWorkout> dayTrainingWorkouts;
 
     public void associatePlanner(TrainingPlanner trainingPlanner) {
         this.trainingPlanner = trainingPlanner;
@@ -69,10 +66,5 @@ public class DayTraining {
         name = body.name();
         notes = body.notes();
         dayOfWeek = body.dayOfWeek();
-        calculateQuantityWorkout();
-    }
-
-    public void calculateQuantityWorkout() {
-        quantityWorkout = workouts.size();
     }
 }

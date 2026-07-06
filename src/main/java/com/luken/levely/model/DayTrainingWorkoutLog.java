@@ -10,28 +10,29 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "workouts")
+@Table(name = "day_training_workout_logs")
 @Getter
-@RequiredArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Workout {
+public class DayTrainingWorkoutLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @EqualsAndHashCode.Include
     private UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "day_training_id")
     @NonNull
-    @Column(name = "name", nullable = false, length = 100)
-    private String name;
+    private DayTraining dayTraining;
+
+    @ManyToOne
+    @JoinColumn(name = "workout_id")
+    @NonNull
+    private Workout workout;
 
     @NonNull
-    @Column(name = "description")
-    private String description;
-
-    @NonNull
-    @Column(name = "order_index", nullable = false)
     private Integer orderIndex;
 
     @CreationTimestamp
@@ -42,8 +43,8 @@ public class Workout {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "workout")
-    private List<DayTrainingWorkout> dayTrainingWorkouts;
-
+    @OneToMany(mappedBy = "dayTrainingWorkoutLog", cascade = CascadeType.ALL)
+    @Setter
+    private List<SetLog> setLogs;
 
 }
