@@ -4,6 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/setreps")
-public class SetRepController {
+@RequestMapping(value = "/daytrainingworkoutlogs")
+public class DayTrainingWorkoutLogController {
 }

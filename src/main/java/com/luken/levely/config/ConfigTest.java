@@ -62,8 +62,9 @@ public class ConfigTest implements CommandLineRunner {
                 .orderIndex(1)
                 .dayTrainingWorkoutLog(dayTrainingWorkoutLog)
                 .reps(12)
-                .weight(12.5)
+                .weight(20.0)
                 .build();
+
 
         setLogList.add(setLog);
 

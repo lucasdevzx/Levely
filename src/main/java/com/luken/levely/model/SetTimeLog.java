@@ -13,4 +13,5 @@ public class SetTimeLog extends SetLog {
     @Column(name = "duration_seconds", nullable = false)
     private Integer durationSeconds;
 
+
 }

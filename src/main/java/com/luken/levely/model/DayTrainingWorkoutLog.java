@@ -47,4 +47,8 @@ public class DayTrainingWorkoutLog {
     @Setter
     private List<SetLog> setLogs;
 
+    public void addSetLogs() {
+
+    }
+
 }

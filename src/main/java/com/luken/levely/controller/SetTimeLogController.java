@@ -1,4 +1,4 @@
 package com.luken.levely.controller;
 
-public class SetTimeController {
+public class SetTimeLogController {
 }
