@@ -1,5 +1,7 @@
 package com.luken.levely.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luken.levely.dto.request.WorkoutRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,9 +14,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "workouts")
 @Getter
-@RequiredArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class Workout {
 
     @Id
@@ -42,8 +44,21 @@ public class Workout {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "workout")
+    @OneToMany(mappedBy = "workout", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<DayTrainingWorkout> dayTrainingWorkouts;
 
+    public static Workout create(WorkoutRequestDTO body) {
+        return new Workout(
+                body.name(),
+                body.description(),
+                body.orderIndex()
+        );
+    }
 
+    public void update(WorkoutRequestDTO body) {
+        name = body.name();
+        description = body.description();
+        orderIndex = body.orderIndex();
+    }
 }

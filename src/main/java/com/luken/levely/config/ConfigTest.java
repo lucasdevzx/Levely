@@ -2,10 +2,12 @@ package com.luken.levely.config;
 
 import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
+import com.luken.levely.dto.request.WorkoutRequestDTO;
 import com.luken.levely.enums.GoalType;
 import com.luken.levely.model.*;
 import com.luken.levely.repository.*;
 import com.luken.levely.service.TrainingPlannerService;
+import com.luken.levely.service.WorkoutService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +31,8 @@ public class ConfigTest implements CommandLineRunner {
     private final WorkoutRepository workoutRepository;
     private final DayTrainingWorkoutRepository dayTrainingWorkoutRepository;
     private final DayTrainingWorkoutLogRepository dayTrainingWorkoutLogRepository;
+
+    private final WorkoutService workoutService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -70,6 +74,10 @@ public class ConfigTest implements CommandLineRunner {
 
         dayTrainingWorkoutLog.setSetLogs(setLogList);
         dayTrainingWorkoutLogRepository.save(dayTrainingWorkoutLog);
+
+        WorkoutRequestDTO workoutRequestDTO = new WorkoutRequestDTO("asd", "asd", 1);
+
+        Workout workout1 = workoutService.createWorkout(workoutRequestDTO);
 
     }
 }
