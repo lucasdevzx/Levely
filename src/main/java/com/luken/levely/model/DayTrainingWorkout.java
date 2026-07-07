@@ -1,5 +1,6 @@
 package com.luken.levely.model;
 
+import com.luken.levely.dto.request.DayTrainingWorkoutRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,8 +14,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "day_training_workouts")
 @Getter
-@NoArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class DayTrainingWorkout {
 
@@ -43,4 +44,16 @@ public class DayTrainingWorkout {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public static DayTrainingWorkout create(DayTraining dayTraining, Workout workout, DayTrainingWorkoutRequestDTO body) {
+        return new DayTrainingWorkout(
+                dayTraining,
+                workout,
+                body.orderIndex()
+        );
+    }
+
+    public void update(DayTrainingWorkoutRequestDTO body) {
+        orderIndex = body.orderIndex();
+    }
 }
