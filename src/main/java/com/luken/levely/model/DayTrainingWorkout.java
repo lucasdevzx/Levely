@@ -25,16 +25,17 @@ public class DayTrainingWorkout {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "day_training_id")
+    @JoinColumn(name = "day_training_id", nullable = false)
     @NonNull
     private DayTraining dayTraining;
 
     @ManyToOne
-    @JoinColumn(name = "workout_id")
+    @JoinColumn(name = "workout_id", nullable = false)
     @NonNull
     private Workout workout;
 
     @NonNull
+    @JoinColumn(name = "order_index", nullable = false)
     private Integer orderIndex;
 
     @CreationTimestamp
@@ -56,4 +57,6 @@ public class DayTrainingWorkout {
     public void update(DayTrainingWorkoutRequestDTO body) {
         orderIndex = body.orderIndex();
     }
+
+
 }

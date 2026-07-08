@@ -2,6 +2,7 @@ package com.luken.levely.model;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
@@ -23,6 +24,8 @@ public abstract class SetLog {
     @ManyToOne
     DayTrainingWorkoutLog dayTrainingWorkoutLog;
 
-
+    public void associateDayTrainingWorkoutLog(DayTrainingWorkoutLog dayTrainingWorkoutLog) {
+        this.dayTrainingWorkoutLog = dayTrainingWorkoutLog;
+    }
 
 }

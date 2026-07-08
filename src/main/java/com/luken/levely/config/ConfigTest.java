@@ -1,11 +1,11 @@
 package com.luken.levely.config;
 
-import com.luken.levely.dto.request.DayTrainingRequestDTO;
-import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
-import com.luken.levely.dto.request.WorkoutRequestDTO;
+import com.luken.levely.dto.request.*;
 import com.luken.levely.enums.GoalType;
 import com.luken.levely.model.*;
 import com.luken.levely.repository.*;
+import com.luken.levely.service.DayTrainingWorkoutLogService;
+import com.luken.levely.service.DayTrainingWorkoutService;
 import com.luken.levely.service.TrainingPlannerService;
 import com.luken.levely.service.WorkoutService;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,6 +33,8 @@ public class ConfigTest implements CommandLineRunner {
     private final DayTrainingWorkoutLogRepository dayTrainingWorkoutLogRepository;
 
     private final WorkoutService workoutService;
+    private final DayTrainingWorkoutService dayTrainingWorkoutService;
+    private final DayTrainingWorkoutLogService dayTrainingWorkoutLogService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -52,28 +54,26 @@ public class ConfigTest implements CommandLineRunner {
         DayTraining dayTraining = DayTraining.create(dayTrainingRequestDTO);
         dayTrainingRepository.save(dayTraining);
 
+        DayTrainingWorkoutRequestDTO dayTrainingWorkoutRequestDTO = new DayTrainingWorkoutRequestDTO(2);
+        var dayTrainingWorkout =  dayTrainingWorkoutService.createDayTrainingWorkout(
+                dayTraining.getId(),
+                workout.getId(),
+                dayTrainingWorkoutRequestDTO
+        );
+
+        var dayTrainingWorkoutLog = dayTrainingWorkoutLogService.createDayTrainingWorkoutLog(dayTrainingWorkout.getId());
+
+        SetRepLogRequestDTO setRepLogRequestDTO = new SetRepLogRequestDTO(
+                1,
+                12,
+                18.5
+        ) ;
+
+        var setRepLog = dayTrainingWorkoutLogService.addSetLog(
+                dayTrainingWorkoutLog.getId(),
+                setRepLogRequestDTO);
 
 
-
-
-
-        DayTrainingWorkoutLog dayTrainingWorkoutLog = new DayTrainingWorkoutLog(dayTraining, workout, 1);
-
-        List<SetLog> setLogList = new ArrayList<>();
-
-        SetLog setLog = SetRepLog
-                .builder()
-                .orderIndex(1)
-                .dayTrainingWorkoutLog(dayTrainingWorkoutLog)
-                .reps(12)
-                .weight(20.0)
-                .build();
-
-
-        setLogList.add(setLog);
-
-        dayTrainingWorkoutLog.setSetLogs(setLogList);
-        dayTrainingWorkoutLogRepository.save(dayTrainingWorkoutLog);
 
         WorkoutRequestDTO workoutRequestDTO = new WorkoutRequestDTO("asd", "asd", 1);
 

@@ -9,6 +9,5 @@ public record DayTrainingWorkoutResponseDTO(
         UUID dayTrainingId,
         UUID workoutId,
         Integer orderIndex
-
 ) {
 }

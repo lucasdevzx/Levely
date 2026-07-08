@@ -76,7 +76,11 @@ public class TrainingPlanner {
 
     public static TrainingPlanner create(TrainingPlannerRequestDTO body) {
         validateDate(body.startDate(), body.endDate());
-        return new TrainingPlanner(body.name(), body.goalType(), body.startDate(), body.endDate());
+        return new TrainingPlanner(
+                body.name(),
+                body.goalType(),
+                body.startDate(),
+                body.endDate());
     }
 
     public void addDayTraining(DayTrainingRequestDTO body) {

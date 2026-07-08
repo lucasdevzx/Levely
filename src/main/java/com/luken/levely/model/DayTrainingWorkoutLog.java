@@ -1,11 +1,14 @@
 package com.luken.levely.model;
 
+import com.luken.levely.dto.request.DayTrainingWorkoutLogRequestDTO;
+import com.luken.levely.dto.request.DayTrainingWorkoutRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +38,8 @@ public class DayTrainingWorkoutLog {
     @NonNull
     private Integer orderIndex;
 
+    private boolean completed = false;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -44,11 +49,17 @@ public class DayTrainingWorkoutLog {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "dayTrainingWorkoutLog", cascade = CascadeType.ALL)
-    @Setter
-    private List<SetLog> setLogs;
+    private List<SetLog> setLogs = new ArrayList<>();
 
-    public void addSetLogs() {
-
+    public static DayTrainingWorkoutLog create(DayTrainingWorkout dayTrainingWorkout) {
+        return new DayTrainingWorkoutLog(
+                dayTrainingWorkout.getDayTraining(),
+                dayTrainingWorkout.getWorkout(),
+                dayTrainingWorkout.getOrderIndex()
+        );
     }
 
+    public void addSetLogs(SetLog setLog) {
+        setLogs.addLast(setLog);
+    }
 }
