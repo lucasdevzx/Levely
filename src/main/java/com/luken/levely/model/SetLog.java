@@ -1,8 +1,7 @@
 package com.luken.levely.model;
 
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
@@ -12,6 +11,7 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuperBuilder
 @NoArgsConstructor
+@Getter
 public abstract class SetLog {
 
     @Id

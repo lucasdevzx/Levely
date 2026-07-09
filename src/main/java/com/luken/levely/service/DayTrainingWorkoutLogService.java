@@ -7,6 +7,8 @@ import com.luken.levely.dto.request.SetTimeLogRequestDTO;
 import com.luken.levely.mapper.DayTrainingWorkoutLogMapper;
 import com.luken.levely.model.*;
 import com.luken.levely.repository.DayTrainingWorkoutLogRepository;
+import com.luken.levely.repository.SetLogRepository;
+import com.luken.levely.repository.SetRepLogRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,7 @@ public class DayTrainingWorkoutLogService {
     private final DayTrainingWorkoutLogMapper dayTrainingWorkoutLogMapper;
 
     private final DayTrainingWorkoutService dayTrainingWorkoutService;
+    private final SetLogRepository setLogRepository;
 
     public Page<DayTrainingWorkoutLog> findAll(int page, int size) {
         return dayTrainingWorkoutLogRepository.findAll(PageRequest.of(page, size));
@@ -46,9 +49,10 @@ public class DayTrainingWorkoutLogService {
     public SetLog addSetLog(UUID dayTrainingWorkoutLogId, SetLogRequestDTO body) {
         var dayTrainingWorkoutLog = findById(dayTrainingWorkoutLogId);
         var setLog = setLogFactory(dayTrainingWorkoutLog, body);
-        dayTrainingWorkoutLog.addSetLogs(setLog);
         setLog.associateDayTrainingWorkoutLog(dayTrainingWorkoutLog);
-        dayTrainingWorkoutLogRepository.save(dayTrainingWorkoutLog);
+
+        setLogRepository.save(setLog);
+        dayTrainingWorkoutLog.addSetLogs(setLog);
         return setLog;
     }
 

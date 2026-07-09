@@ -4,14 +4,14 @@ import com.luken.levely.dto.request.SetRepLogRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "set_reps_logs")
 @SuperBuilder
 @NoArgsConstructor
+@Getter
 public class SetRepLog extends SetLog {
 
     @Column(name = "reps", nullable = false)

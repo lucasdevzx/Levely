@@ -67,7 +67,7 @@ public class ConfigTest implements CommandLineRunner {
                 1,
                 12,
                 18.5
-        ) ;
+        );
 
         var setRepLog = dayTrainingWorkoutLogService.addSetLog(
                 dayTrainingWorkoutLog.getId(),
