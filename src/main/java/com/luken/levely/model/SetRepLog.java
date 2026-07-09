@@ -23,6 +23,10 @@ public class SetRepLog extends SetLog {
     private Double weight;
 
     public static SetRepLog create(DayTrainingWorkoutLog dayTrainingWorkoutLog, SetRepLogRequestDTO body) {
+        if (dayTrainingWorkoutLog.getSetLogs().size() > 12) {
+            throw new IllegalArgumentException("The maximum number of set has been reached.");
+        }
+
         return SetRepLog
                 .builder()
                 .orderIndex(body.orderIndex())

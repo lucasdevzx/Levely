@@ -21,6 +21,10 @@ public class SetTimeLog extends SetLog {
     private Integer durationSeconds;
 
     public static SetTimeLog create(DayTrainingWorkoutLog dayTrainingWorkoutLog, SetTimeLogRequestDTO body) {
+        if (dayTrainingWorkoutLog.getSetLogs().size() > 12) {
+            throw new IllegalArgumentException("The maximum number of set has been reached.");
+        }
+
         return SetTimeLog
                 .builder()
                 .orderIndex(body.orderIndex())

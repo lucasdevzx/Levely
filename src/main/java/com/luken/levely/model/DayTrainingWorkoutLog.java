@@ -48,7 +48,7 @@ public class DayTrainingWorkoutLog {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "dayTrainingWorkoutLog", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dayTrainingWorkoutLog", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SetLog> setLogs = new ArrayList<>();
 
     public static DayTrainingWorkoutLog create(DayTrainingWorkout dayTrainingWorkout) {

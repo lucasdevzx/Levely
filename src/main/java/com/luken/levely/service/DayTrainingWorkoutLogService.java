@@ -72,5 +72,4 @@ public class DayTrainingWorkoutLogService {
     public void deleteDayTrainingWorkoutLog(UUID dayTrainingWorkoutLogId) {
         dayTrainingWorkoutLogRepository.deleteById(dayTrainingWorkoutLogId);
     }
-
 }
