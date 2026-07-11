@@ -16,7 +16,7 @@ import java.util.UUID;
 @Table(name = "day_training_workout_logs")
 @Getter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class DayTrainingWorkoutLog {
 

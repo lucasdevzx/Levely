@@ -22,9 +22,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "training_planners")
 @Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TrainingPlanner {
 
     @Id

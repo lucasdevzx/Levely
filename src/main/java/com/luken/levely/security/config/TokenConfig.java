@@ -23,7 +23,6 @@ public class TokenConfig {
     public String generateToken(User user) {
         return JWT.create()
                 .withIssuer("Levely")
-                .withClaim("userId", user.getId())
                 .withSubject(user.getEmail())
                 .withExpiresAt(expirationAt())
                 .sign(Algorithm.HMAC256(secret));
@@ -37,16 +36,13 @@ public class TokenConfig {
                     .verify(token);
 
             String email = decodedJWT.getSubject();
-            UUID id = decodedJWT.getClaim("id").asLong();
-            return new JwtUserData(id, email);
+            return new JwtUserData(email);
         } catch (JWTVerificationException e) {
             return null;
         }
-
     }
 
     public Instant expirationAt() {
-        return Instant.now().plus(600, ChronoUnit.SECONDS);
+        return Instant.now().plus(600, ChronoUnit.SECONDS); // 10 Minutes
     }
-
 }

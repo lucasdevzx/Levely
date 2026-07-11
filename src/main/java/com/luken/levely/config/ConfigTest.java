@@ -39,6 +39,7 @@ public class ConfigTest implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+
         TrainingPlannerRequestDTO body = new TrainingPlannerRequestDTO(
                 "Verão",
                 GoalType.HYPERTROPHY,
@@ -47,7 +48,8 @@ public class ConfigTest implements CommandLineRunner {
         );
         trainingPlannerService.createPlanner(body);
 
-        Workout workout = new Workout("Tricpes", "ADS", 1);
+        WorkoutRequestDTO workoutRequestDTO = new WorkoutRequestDTO("Triceps", "ASD", 1);
+        Workout workout = Workout.create(workoutRequestDTO);
         workoutRepository.save(workout);
 
         DayTrainingRequestDTO dayTrainingRequestDTO = new DayTrainingRequestDTO("Dia de Peito", "ads", DayOfWeek.FRIDAY);
@@ -73,11 +75,6 @@ public class ConfigTest implements CommandLineRunner {
                 dayTrainingWorkoutLog.getId(),
                 setRepLogRequestDTO);
 
-
-
-        WorkoutRequestDTO workoutRequestDTO = new WorkoutRequestDTO("asd", "asd", 1);
-
-        Workout workout1 = workoutService.createWorkout(workoutRequestDTO);
 
     }
 }

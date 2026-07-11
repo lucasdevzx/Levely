@@ -14,9 +14,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "workouts")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@NoArgsConstructor
-@RequiredArgsConstructor
 public class Workout {
 
     @Id
