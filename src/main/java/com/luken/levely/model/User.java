@@ -1,6 +1,7 @@
 package com.luken.levely.model;
 
 import com.luken.levely.enums.Gender;
+import com.luken.levely.security.auth.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
+@Getter
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class User {
@@ -25,6 +27,15 @@ public class User {
 
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "role")
+    private UserRole role;
 
     @Column(name = "birth", nullable = false)
     private LocalDate birth;
