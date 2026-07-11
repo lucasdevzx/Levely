@@ -44,15 +44,20 @@ public class Workout {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @NonNull
+    @ManyToOne
+    private User user;
+
     @OneToMany(mappedBy = "workout", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<DayTrainingWorkout> dayTrainingWorkouts;
 
-    public static Workout create(WorkoutRequestDTO body) {
+    public static Workout create(WorkoutRequestDTO body, User user) {
         return new Workout(
                 body.name(),
                 body.description(),
-                body.orderIndex()
+                body.orderIndex(),
+                user
         );
     }
 

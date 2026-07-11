@@ -9,6 +9,7 @@ import com.luken.levely.model.*;
 import com.luken.levely.repository.DayTrainingWorkoutLogRepository;
 import com.luken.levely.repository.SetLogRepository;
 import com.luken.levely.repository.SetRepLogRepository;
+import com.luken.levely.security.auth.AuthenticatedUser;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ public class DayTrainingWorkoutLogService {
 
     private final DayTrainingWorkoutService dayTrainingWorkoutService;
     private final SetLogRepository setLogRepository;
+    private final AuthenticatedUser authenticatedUser;
 
     public Page<DayTrainingWorkoutLog> findAll(int page, int size) {
         return dayTrainingWorkoutLogRepository.findAll(PageRequest.of(page, size));
@@ -41,6 +43,12 @@ public class DayTrainingWorkoutLogService {
 
     public DayTrainingWorkoutLog createDayTrainingWorkoutLog(UUID dayTrainingWorkoutId) {
         var dayTrainingWorkout = dayTrainingWorkoutService.findById(dayTrainingWorkoutId);
+        var userOwnerDayTraining = dayTrainingWorkout.getDayTraining().getTrainingPlanner().getUser();
+        var userOwnerWorkout = dayTrainingWorkout.getWorkout().getUser();
+
+        authenticatedUser.ownershipValidator(userOwnerWorkout);
+        authenticatedUser.ownershipValidator(userOwnerDayTraining);
+
         var dayTrainingWorkoutLog = DayTrainingWorkoutLog.create(dayTrainingWorkout);
         return dayTrainingWorkoutLogRepository.save(dayTrainingWorkoutLog);
     }
@@ -48,6 +56,12 @@ public class DayTrainingWorkoutLogService {
     @Transactional
     public SetLog addSetLog(UUID dayTrainingWorkoutLogId, SetLogRequestDTO body) {
         var dayTrainingWorkoutLog = findById(dayTrainingWorkoutLogId);
+        var userOwnerDayTraining = dayTrainingWorkoutLog.getDayTraining().getTrainingPlanner().getUser();
+        var userOwnerWorkout = dayTrainingWorkoutLog.getWorkout().getUser();
+
+        authenticatedUser.ownershipValidator(userOwnerWorkout);
+        authenticatedUser.ownershipValidator(userOwnerDayTraining);
+
         var setLog = setLogFactory(dayTrainingWorkoutLog, body);
         setLog.associateDayTrainingWorkoutLog(dayTrainingWorkoutLog);
 
@@ -70,6 +84,13 @@ public class DayTrainingWorkoutLogService {
     }
 
     public void deleteDayTrainingWorkoutLog(UUID dayTrainingWorkoutLogId) {
+        var dayTrainingWorkoutLog = findById(dayTrainingWorkoutLogId);
+        var userOwnerDayTraining = dayTrainingWorkoutLog.getDayTraining().getTrainingPlanner().getUser();
+        var userOwnerWorkout = dayTrainingWorkoutLog.getWorkout().getUser();
+
+        authenticatedUser.ownershipValidator(userOwnerWorkout);
+        authenticatedUser.ownershipValidator(userOwnerDayTraining);
+
         dayTrainingWorkoutLogRepository.deleteById(dayTrainingWorkoutLogId);
     }
 }
