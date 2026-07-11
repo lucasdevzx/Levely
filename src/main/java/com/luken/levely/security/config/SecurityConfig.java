@@ -29,12 +29,6 @@ public class SecurityConfig {
 
                 .csrf(csrf -> csrf.disable())
 
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write(authException.getMessage());
-                        }))
-
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer
                         .frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
 

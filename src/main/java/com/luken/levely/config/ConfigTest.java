@@ -39,15 +39,6 @@ public class ConfigTest implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
-        TrainingPlannerRequestDTO body = new TrainingPlannerRequestDTO(
-                "Verão",
-                GoalType.HYPERTROPHY,
-                LocalDate.of(2026, 7, 28),
-                LocalDate.of(2026, 8, 4)
-        );
-        trainingPlannerService.createPlanner(body);
-
         WorkoutRequestDTO workoutRequestDTO = new WorkoutRequestDTO("Triceps", "ASD", 1);
         Workout workout = Workout.create(workoutRequestDTO);
         workoutRepository.save(workout);

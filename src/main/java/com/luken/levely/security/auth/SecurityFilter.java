@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 var user = authConfig.loadUserByUsername(tokenDecoded.email());
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        user.getPassword(),
+                        user,
                         null,
                         user.getAuthorities());
 

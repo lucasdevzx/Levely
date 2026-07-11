@@ -34,6 +34,12 @@ public class TrainingPlannerController {
         return ResponseEntity.ok().body(trainingPlanners.map(trainingPlannerMapper::toDTO));
     }
 
+    @GetMapping(value = "/me")
+    public ResponseEntity<Page<TrainingPlannerResponseDTO>> findAllMe(@RequestParam int page, @RequestParam int size) {
+        Page<TrainingPlanner> trainingPlanners = trainingPlannerService.findAllMe(page, size);
+        return ResponseEntity.ok().body(trainingPlanners.map(trainingPlannerMapper::toDTO));
+    }
+
     @GetMapping(value = "/{trainingPlannerId}")
     public ResponseEntity<TrainingPlannerResponseDTO> findById(@PathVariable UUID trainingPlannerId) {
         var trainingPlanner = trainingPlannerService.findById(trainingPlannerId);
@@ -72,7 +78,6 @@ public class TrainingPlannerController {
     public ResponseEntity<TrainingPlannerResponseDTO> updatePlannerStatus(@PathVariable UUID trainingPlannerId, @RequestBody TrainingPlannerStatusRequestDTO body) {
         var trainingPlanner = trainingPlannerService.updatePlannerStatus(trainingPlannerId, body);
         return ResponseEntity.ok().body(trainingPlannerMapper.toDTO(trainingPlanner));
-
     }
 
     @DeleteMapping(value = "/{trainingPlannerId}")

@@ -13,4 +13,6 @@ public interface TrainingPlannerRepository extends JpaRepository<TrainingPlanner
 
     Page<TrainingPlanner> findAll(Pageable pageable);
 
+    Page<TrainingPlanner> findAllByUserId(UUID userId, Pageable pageable);
+
 }

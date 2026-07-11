@@ -68,19 +68,21 @@ public class TrainingPlanner {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @NonNull
     @ManyToOne
     private User user;
 
     @OneToMany(mappedBy = "trainingPlanner", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DayTraining> dayTrainings;
 
-    public static TrainingPlanner create(TrainingPlannerRequestDTO body) {
+    public static TrainingPlanner create(TrainingPlannerRequestDTO body, User user) {
         validateDate(body.startDate(), body.endDate());
         return new TrainingPlanner(
                 body.name(),
                 body.goalType(),
                 body.startDate(),
-                body.endDate());
+                body.endDate(),
+                user);
     }
 
     public void addDayTraining(DayTrainingRequestDTO body) {
