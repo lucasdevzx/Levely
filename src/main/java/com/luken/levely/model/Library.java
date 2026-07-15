@@ -11,7 +11,7 @@ import java.util.UUID;
 @Table(name = "library")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+//@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Library {
 
@@ -20,11 +20,18 @@ public class Library {
     @EqualsAndHashCode.Include
     private UUID id;
 
-    // When create method for delete Libraru, add delete for TrainingPlannerLibrary
-    @OneToMany(mappedBy = "library")
+    private final String name = "Community Library";
+
+    // When create method for delete Library, add delete for TrainingPlannerLibrary
+    @OneToMany(mappedBy = "library", fetch = FetchType.LAZY)
     private List<TrainingPlannerLibrary> trainingPlannerLibraries;
 
-    @NonNull
-    private String name;
+    public static Library create() {
+        return new Library();
+    }
+
+    public void addTrainingPlanner(TrainingPlannerLibrary trainingPlannerLibrary) {
+        trainingPlannerLibraries.add(trainingPlannerLibrary);
+    }
 
 }

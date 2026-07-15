@@ -26,5 +26,8 @@ public class Like {
     @OneToMany(mappedBy = "like")
     private List<LikeTrainingPlannerLibrary> likeTrainingPlannerLibraries;
 
+    public static Like create(User user) {
+        return new Like(user);
+    }
 
 }

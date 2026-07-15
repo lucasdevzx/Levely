@@ -46,4 +46,11 @@ public class TrainingPlannerLibrary {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public static TrainingPlannerLibrary create(TrainingPlanner trainingPlanner, Library library) {
+        return new TrainingPlannerLibrary(
+                trainingPlanner,
+                library
+        );
+    }
+
 }
