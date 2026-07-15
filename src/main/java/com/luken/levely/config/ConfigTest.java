@@ -1,6 +1,8 @@
+/*
 package com.luken.levely.config;
 
 import com.luken.levely.dto.request.*;
+import com.luken.levely.enums.Gender;
 import com.luken.levely.enums.GoalType;
 import com.luken.levely.model.*;
 import com.luken.levely.repository.*;
@@ -31,6 +33,7 @@ public class ConfigTest implements CommandLineRunner {
     private final WorkoutRepository workoutRepository;
     private final DayTrainingWorkoutRepository dayTrainingWorkoutRepository;
     private final DayTrainingWorkoutLogRepository dayTrainingWorkoutLogRepository;
+    private final UserRepository userRepository;
 
     private final WorkoutService workoutService;
     private final DayTrainingWorkoutService dayTrainingWorkoutService;
@@ -39,9 +42,22 @@ public class ConfigTest implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+
+        User user = User.create(
+                "L",
+                "S",
+                "luken",
+                "asd@gmail.com",
+                "Lucas_fullpvp123@",
+                LocalDate.now(),
+                Gender.MALE
+        );
+        userRepository.save(user);
+
         WorkoutRequestDTO workoutRequestDTO = new WorkoutRequestDTO("Triceps", "ASD", 1);
-        Workout workout = Workout.create(workoutRequestDTO);
+        Workout workout = Workout.create(workoutRequestDTO, user);
         workoutRepository.save(workout);
+
 
         DayTrainingRequestDTO dayTrainingRequestDTO = new DayTrainingRequestDTO("Dia de Peito", "ads", DayOfWeek.FRIDAY);
         DayTraining dayTraining = DayTraining.create(dayTrainingRequestDTO);
@@ -69,3 +85,5 @@ public class ConfigTest implements CommandLineRunner {
 
     }
 }
+
+ */

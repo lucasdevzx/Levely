@@ -75,6 +75,9 @@ public class TrainingPlanner {
     @OneToMany(mappedBy = "trainingPlanner", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DayTraining> dayTrainings;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private TrainingPlannerLibrary trainingPlannerLibrary;
+
     public static TrainingPlanner create(TrainingPlannerRequestDTO body, User user) {
         validateDate(body.startDate(), body.endDate());
         return new TrainingPlanner(
