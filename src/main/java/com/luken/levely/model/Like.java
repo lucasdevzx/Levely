@@ -3,6 +3,7 @@ package com.luken.levely.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +19,12 @@ public class Like {
     @EqualsAndHashCode.Include
     private UUID id;
 
-    // User
+    @NonNull
+    @ManyToOne
+    private User user;
+
+    @OneToMany(mappedBy = "like")
+    private List<LikeTrainingPlannerLibrary> likeTrainingPlannerLibraries;
+
 
 }

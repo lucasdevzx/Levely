@@ -6,16 +6,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "training_planner_library")
+@Table(name = "like_training_planner_library")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class TrainingPlannerLibrary {
+public class LikeTrainingPlannerLibrary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -23,20 +22,12 @@ public class TrainingPlannerLibrary {
     private UUID id;
 
     @NonNull
-    @OneToOne
-    private TrainingPlanner trainingPlanner;
+    @ManyToOne
+    private Like like;
 
     @NonNull
     @ManyToOne
-    private Library library;
-
-    // When create method for delete PlannerLibrary, add delete for Likes
-    @OneToMany(mappedBy = "trainingPlannerLibrary")
-    private List<LikeTrainingPlannerLibrary> likeTrainingPlannerLibraries;
-
-    // When create method for delete PlannerLibrary, add delete for Saveds
-    @OneToMany(mappedBy = "trainingPlannerLibrary")
-    private List<SavedTrainingPlannerLibrary> savedTrainingPlannerLibraries;
+    private TrainingPlannerLibrary trainingPlannerLibrary;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
