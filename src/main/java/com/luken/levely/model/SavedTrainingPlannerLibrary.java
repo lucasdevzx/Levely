@@ -22,7 +22,8 @@ public class SavedTrainingPlannerLibrary {
     private UUID id;
 
     @NonNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
     private Saved saved;
 
     @NonNull
@@ -36,5 +37,9 @@ public class SavedTrainingPlannerLibrary {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public static SavedTrainingPlannerLibrary create(Saved saved, TrainingPlannerLibrary trainingPlannerLibrary) {
+        return new SavedTrainingPlannerLibrary(saved, trainingPlannerLibrary);
+    }
 
 }

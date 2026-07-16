@@ -20,6 +20,7 @@ public class TrainingPlannerLibraryService {
 
      private final TrainingPlannerService trainingPlannerService;
      private final LikeTrainingPlannerLibraryService likeTrainingPlannerLibraryService;
+     private final SavedTrainingPlannerLibraryService savedTrainingPlannerLibraryService;
      private final AuthenticatedUser authenticatedUser;
 
      public TrainingPlannerLibrary findById(UUID trainingPlannerLibraryId) {
@@ -45,12 +46,30 @@ public class TrainingPlannerLibraryService {
          return trainingPlannerLibraryRepository.save(trainingPlannerLibrary);
      }
 
+     public TrainingPlannerLibrary addSaved(UUID trainingPlannerLibraryId) {
+         var trainingPlannerLibrary = findById(trainingPlannerLibraryId);
+         authenticatedUser.ownershipValidator(trainingPlannerLibrary.getTrainingPlanner().getUser());
+
+         var savedTrainingPlannerLibrary = savedTrainingPlannerLibraryService.createSavedTrainingPlannerLibrary(trainingPlannerLibrary);
+
+         trainingPlannerLibrary.addSaved(savedTrainingPlannerLibrary);
+         return trainingPlannerLibraryRepository.save(trainingPlannerLibrary);
+     }
+
      @Transactional
      public void deleteLikeTrainingPlannerLibrary(UUID trainingPlannerLibraryId) {
          var trainingPlannerLibrary = findById(trainingPlannerLibraryId);
          authenticatedUser.ownershipValidator(trainingPlannerLibrary.getTrainingPlanner().getUser());
 
          likeTrainingPlannerLibraryService.deleteLikeTrainingPlannerLibrary(trainingPlannerLibrary);
+     }
+
+     @Transactional
+     public void deleteSavedTrainingPlannerLibrary(UUID trainingPlannerLibraryId) {
+         var trainingPlannerLibrary = findById(trainingPlannerLibraryId);
+         authenticatedUser.ownershipValidator(trainingPlannerLibrary.getTrainingPlanner().getUser());
+
+         savedTrainingPlannerLibraryService.deleteSavedTrainingPlannerLibrary(trainingPlannerLibrary);
      }
 
 }

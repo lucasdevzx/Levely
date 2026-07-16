@@ -20,7 +20,7 @@ public class TrainingPlannerLibraryController {
     private final TrainingPlannerLibraryService trainingPlannerLibraryService;
     private final TrainingPlannerLibraryMapper trainingPlannerLibraryMapper;
 
-    @PostMapping(value = "/{trainingPlannerLibraryId}")
+    @PostMapping(value = "/{trainingPlannerLibraryId}/like")
     public ResponseEntity<TrainingPlannerLibraryResponseDTO> addLike(@PathVariable UUID trainingPlannerLibraryId) {
         var trainingPlannerLibrary = trainingPlannerLibraryService.addLike(trainingPlannerLibraryId);
 
@@ -36,9 +36,32 @@ public class TrainingPlannerLibraryController {
         return ResponseEntity.created(uri).body(trainingPlannerLibraryMapper.toDTO(trainingPlannerLibrary));
     }
 
-    @DeleteMapping(value = "/{trainingPlannerLibraryId}")
+    @PostMapping(value = "/{trainingPlannerLibraryId}/saved")
+    public ResponseEntity<TrainingPlannerLibraryResponseDTO> addSaved(@PathVariable UUID trainingPlannerLibraryId) {
+        var trainingPlannerLibrary = trainingPlannerLibraryService.addSaved(trainingPlannerLibraryId);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromPath("/{savedTrainingPlannerLibraryId")
+                .buildAndExpand(
+                        trainingPlannerLibrary
+                                .getSavedTrainingPlannerLibraries()
+                                .getLast()
+                                .getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(trainingPlannerLibraryMapper.toDTO(trainingPlannerLibrary));
+    }
+
+    @DeleteMapping(value = "/{trainingPlannerLibraryId}/like")
     public ResponseEntity<Void> deleteLike(@PathVariable UUID trainingPlannerLibraryId) {
         trainingPlannerLibraryService.deleteLikeTrainingPlannerLibrary(trainingPlannerLibraryId);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping(value = "/{trainingPlannerLibraryId}/saved")
+    public ResponseEntity<Void> deleteSaved(@PathVariable UUID trainingPlannerLibraryId) {
+        trainingPlannerLibraryService.deleteSavedTrainingPlannerLibrary(trainingPlannerLibraryId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

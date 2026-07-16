@@ -22,7 +22,7 @@ public class LikeTrainingPlannerLibrary {
     private UUID id;
 
     @NonNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(unique = true)
     private Like like;
 

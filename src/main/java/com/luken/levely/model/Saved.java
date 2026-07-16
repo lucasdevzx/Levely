@@ -26,4 +26,8 @@ public class Saved {
     @OneToMany(mappedBy = "saved")
     private List<SavedTrainingPlannerLibrary> savedTrainingPlannerLibraries;
 
+    public static Saved create(User user) {
+        return new Saved(user);
+    }
+
 }
