@@ -4,8 +4,6 @@ import com.luken.levely.dto.response.LibraryResponseDTO;
 import com.luken.levely.dto.response.TrainingPlannerLibraryResponseDTO;
 import com.luken.levely.mapper.LibraryMapper;
 import com.luken.levely.mapper.TrainingPlannerLibraryMapper;
-import com.luken.levely.model.Library;
-import com.luken.levely.model.TrainingPlannerLibrary;
 import com.luken.levely.service.LibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +44,7 @@ public class LibraryController {
 
     @PostMapping(value = "/{libraryId}/trainingplanner/{trainingPlannerId}")
     public ResponseEntity<TrainingPlannerLibraryResponseDTO> addTrainingPlanner(@PathVariable UUID trainingPlannerId, @PathVariable UUID libraryId) {
-        var trainingPlannerLibrary = libraryService.addTrainingPlanner(trainingPlannerId, libraryId);
+        var trainingPlannerLibrary = libraryService.addTrainingPlannerLibrary(trainingPlannerId, libraryId);
 
         URI uri = ServletUriComponentsBuilder
                 .fromPath("/{trainingPlannerLibrary}")

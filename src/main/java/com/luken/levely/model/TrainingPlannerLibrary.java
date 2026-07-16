@@ -53,4 +53,7 @@ public class TrainingPlannerLibrary {
         );
     }
 
+    public void addLike(LikeTrainingPlannerLibrary likeTrainingPlannerLibrary) {
+        likeTrainingPlannerLibraries.add(likeTrainingPlannerLibrary);
+    }
 }

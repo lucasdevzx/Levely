@@ -27,7 +27,7 @@ public class LibraryService {
         return libraryRepository.save(library);
     }
 
-    public TrainingPlannerLibrary addTrainingPlanner(UUID trainingPlannerId, UUID libraryId) {
+    public TrainingPlannerLibrary addTrainingPlannerLibrary(UUID trainingPlannerId, UUID libraryId) {
         var library = findById(libraryId);
         var trainingPlannerLibrary = trainingPlannerLibraryService.createTrainingPlannerLibrary(trainingPlannerId, library);
         library.addTrainingPlanner(trainingPlannerLibrary);

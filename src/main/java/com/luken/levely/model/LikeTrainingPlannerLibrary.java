@@ -23,6 +23,7 @@ public class LikeTrainingPlannerLibrary {
 
     @NonNull
     @ManyToOne
+    @JoinColumn(unique = true)
     private Like like;
 
     @NonNull
@@ -37,4 +38,7 @@ public class LikeTrainingPlannerLibrary {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public static LikeTrainingPlannerLibrary create(Like like, TrainingPlannerLibrary trainingPlannerLibrary) {
+        return new LikeTrainingPlannerLibrary(like, trainingPlannerLibrary);
+    }
 }
