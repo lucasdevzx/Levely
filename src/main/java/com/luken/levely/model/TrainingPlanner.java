@@ -16,6 +16,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,7 +74,7 @@ public class TrainingPlanner {
     private User user;
 
     @OneToMany(mappedBy = "trainingPlanner", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DayTraining> dayTrainings;
+    private List<DayTraining> dayTrainings = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private TrainingPlannerLibrary trainingPlannerLibrary;
@@ -88,12 +89,18 @@ public class TrainingPlanner {
                 user);
     }
 
+    public void changePlannerStatus(PlannerStatus plannerStatus) {
+        // Logic Here
+
+        this.plannerStatus = plannerStatus;
+    }
+
     public void addDayTraining(DayTrainingRequestDTO body) {
         if (plannerStatus == PlannerStatus.COMPLETED || plannerStatus == PlannerStatus.PAUSED) {
             throw new IllegalArgumentException("The planner status does not allow changes");
         }
 
-        if (dayTrainings.size() == 7) {
+        if (dayTrainings.size() > 7) {
             throw new IllegalArgumentException("The planner reached the maximum number of training days");
         }
 
