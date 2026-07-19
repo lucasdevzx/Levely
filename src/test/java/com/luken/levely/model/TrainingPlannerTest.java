@@ -1,5 +1,7 @@
 package com.luken.levely.model;
 
+import com.luken.levely.common.exception.EndDateBeforeStartDateException;
+import com.luken.levely.common.exception.StartDateBeforeNowException;
 import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.enums.PlannerStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -123,6 +126,32 @@ class TrainingPlannerTest {
             assertEquals(1, actualQuantity);
 
         }
+    }
+
+    @Test
+    void shouldThrowExceptionIfEndDateIsBeforeOfStartDate() {
+
+        // ARRANGE
+
+        LocalDate startDate = LocalDate.of(2026, 7, 15);
+        LocalDate endDate = LocalDate.of(2026, 5, 22);
+
+        // ASSERT + ACT
+        assertThrows(EndDateBeforeStartDateException.class,
+                () -> TrainingPlanner.validateDate(startDate, endDate));
+    }
+
+    @Test
+    void shouldThrowExceptionIfStartDateIsBeforeOfNow() {
+
+        // ARRANGE
+
+        LocalDate startDate = LocalDate.of(2026, 5, 15);
+        LocalDate endDate = LocalDate.of(2026, 9, 22);
+
+        // ASSERT + ACT
+        assertThrows(StartDateBeforeNowException.class,
+                () -> TrainingPlanner.validateDate(startDate, endDate));
     }
 
 }

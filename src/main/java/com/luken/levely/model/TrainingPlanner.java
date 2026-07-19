@@ -1,6 +1,8 @@
 package com.luken.levely.model;
 
+import com.luken.levely.common.exception.EndDateBeforeStartDateException;
 import com.luken.levely.common.exception.InvalidActionException;
+import com.luken.levely.common.exception.StartDateBeforeNowException;
 import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerStatusRequestDTO;
@@ -90,12 +92,16 @@ public class TrainingPlanner {
     }
 
     public void changePlannerStatus(PlannerStatus plannerStatus) {
-        // Logic Here
+
+        if (this.plannerStatus.equals(plannerStatus)) {
+            throw new IllegalArgumentException("The planner status cannot be the same as the current one.");
+        }
 
         this.plannerStatus = plannerStatus;
     }
 
     public void addDayTraining(DayTrainingRequestDTO body) {
+
         if (plannerStatus == PlannerStatus.COMPLETED || plannerStatus == PlannerStatus.PAUSED) {
             throw new IllegalArgumentException("The planner status does not allow changes");
         }
@@ -122,13 +128,15 @@ public class TrainingPlanner {
     }
 
     public static void validateDate(LocalDate startDate, LocalDate endDate) {
+
         if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("The end date cannot be before the start date.");
+            throw new EndDateBeforeStartDateException("The end date cannot be before the start date");
         }
 
         if (startDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("The start date cannot be before the date now");
+            throw new StartDateBeforeNowException("The start date cannot be before the date now");
         }
+
     }
 
     public void calculateTotalWeeks() {
