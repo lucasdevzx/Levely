@@ -3,6 +3,7 @@ package com.luken.levely.model;
 import com.luken.levely.common.exception.EndDateBeforeStartDateException;
 import com.luken.levely.common.exception.StartDateBeforeNowException;
 import com.luken.levely.dto.request.DayTrainingRequestDTO;
+import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
 import com.luken.levely.enums.PlannerStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,6 @@ class TrainingPlannerTest {
         void shouldThrowExceptionIfPlannerStatusIsCompleted() {
 
             // ARRANGE
-
             DayTrainingRequestDTO dto = new DayTrainingRequestDTO(
                     "Strength",
                     "Training of Strength",
@@ -55,7 +55,6 @@ class TrainingPlannerTest {
         void shouldThrowExceptionIfPlannerStatusIsPaused() {
 
             // ARRANGE
-
             DayTrainingRequestDTO dto = new DayTrainingRequestDTO(
                     "Strength",
                     "Training of Strength",
@@ -73,7 +72,6 @@ class TrainingPlannerTest {
         void shouldThrowExceptionIfDayTrainingQuantityIsBiggerSeven() {
 
             // ARRANGE
-
             DayTrainingRequestDTO dto = new DayTrainingRequestDTO(
                     "Strength",
                     "Training of Strength",
@@ -92,7 +90,6 @@ class TrainingPlannerTest {
         void shouldContainAssociatedPlannerInDayTraining() {
 
             // ARRANGE
-
             DayTrainingRequestDTO dto = new DayTrainingRequestDTO(
                     "Strength",
                     "Training of Strength",
@@ -111,7 +108,6 @@ class TrainingPlannerTest {
         void shouldReturnDayTrainingQuantityDifferentOfZero() {
 
             // ARRANGE
-
             DayTrainingRequestDTO dto = new DayTrainingRequestDTO(
                     "Strength",
                     "Training of Strength",
@@ -132,7 +128,6 @@ class TrainingPlannerTest {
     void shouldThrowExceptionIfEndDateIsBeforeOfStartDate() {
 
         // ARRANGE
-
         LocalDate startDate = LocalDate.of(2026, 7, 15);
         LocalDate endDate = LocalDate.of(2026, 5, 22);
 
@@ -145,13 +140,23 @@ class TrainingPlannerTest {
     void shouldThrowExceptionIfStartDateIsBeforeOfNow() {
 
         // ARRANGE
-
         LocalDate startDate = LocalDate.of(2026, 5, 15);
         LocalDate endDate = LocalDate.of(2026, 9, 22);
 
         // ASSERT + ACT
         assertThrows(StartDateBeforeNowException.class,
                 () -> TrainingPlanner.validateDate(startDate, endDate));
+    }
+
+    @Test
+    void shouldThrowExceptionIfPlannerStatusIsEquals() {
+
+        // ARRANGE
+        TrainingPlanner trainingPlanner = new TrainingPlanner();
+
+        // ASSERT + ACT
+        assertThrows(IllegalArgumentException.class,
+                () -> trainingPlanner.changePlannerStatus(PlannerStatus.ACTIVE));
     }
 
 }

@@ -26,7 +26,12 @@ public class Like {
     @OneToMany(mappedBy = "like")
     private List<LikeTrainingPlannerLibrary> likeTrainingPlannerLibraries;
 
-    public static Like create(User user) {
+    public static Like create(User user, boolean existsLike) {
+
+        if (existsLike) {
+            throw new IllegalArgumentException("You can only like it once");
+        }
+
         return new Like(user);
     }
 

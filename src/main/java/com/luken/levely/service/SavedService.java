@@ -13,8 +13,8 @@ public class SavedService {
 
     private final SavedRepository savedRepository;
 
-    public Saved createSaved(User user) {
-        var saved = Saved.create(user);
+    public Saved createSaved(User user, boolean existsSaved) {
+        var saved = Saved.create(user, existsSaved);
         return savedRepository.save(saved);
     }
 }

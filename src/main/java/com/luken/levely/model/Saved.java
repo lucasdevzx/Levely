@@ -26,7 +26,12 @@ public class Saved {
     @OneToMany(mappedBy = "saved")
     private List<SavedTrainingPlannerLibrary> savedTrainingPlannerLibraries;
 
-    public static Saved create(User user) {
+    public static Saved create(User user, boolean existsSaved) {
+
+        if (existsSaved) {
+            throw new IllegalArgumentException("You can only save it once");
+        }
+
         return new Saved(user);
     }
 

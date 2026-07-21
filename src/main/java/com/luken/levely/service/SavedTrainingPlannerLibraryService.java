@@ -21,11 +21,10 @@ public class SavedTrainingPlannerLibraryService {
     public SavedTrainingPlannerLibrary createSavedTrainingPlannerLibrary(TrainingPlannerLibrary trainingPlannerLibrary) {
         var user = authenticatedUser.getAuthenticatedUser();
 
-        if (savedTrainingPlannerLibraryRepository.existsByTrainingPlannerLibraryIdAndSavedUserId(trainingPlannerLibrary.getId(), user.getId())) {
-            throw new IllegalArgumentException("You can only save it once");
-        }
+        boolean existsSaved = savedTrainingPlannerLibraryRepository
+                .existsByTrainingPlannerLibraryIdAndSavedUserId(trainingPlannerLibrary.getId(), user.getId());
 
-        var saved = savedService.createSaved(user);
+        var saved = savedService.createSaved(user, existsSaved);
         var savedTrainingPlannerLibrary = SavedTrainingPlannerLibrary.create(saved, trainingPlannerLibrary);
         return savedTrainingPlannerLibraryRepository.save(savedTrainingPlannerLibrary);
     }

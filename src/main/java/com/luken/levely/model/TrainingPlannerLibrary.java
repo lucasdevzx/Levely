@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,11 +33,11 @@ public class TrainingPlannerLibrary {
 
     // When create method for delete PlannerLibrary, add delete for Likes
     @OneToMany(mappedBy = "trainingPlannerLibrary")
-    private List<LikeTrainingPlannerLibrary> likeTrainingPlannerLibraries;
+    private List<LikeTrainingPlannerLibrary> likeTrainingPlannerLibraries = new ArrayList<>();
 
     // When create method for delete PlannerLibrary, add delete for Saveds
     @OneToMany(mappedBy = "trainingPlannerLibrary")
-    private List<SavedTrainingPlannerLibrary> savedTrainingPlannerLibraries;
+    private List<SavedTrainingPlannerLibrary> savedTrainingPlannerLibraries = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

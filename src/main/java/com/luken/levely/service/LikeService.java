@@ -12,8 +12,8 @@ public class LikeService {
 
     private final LikeRepository likeRepository;
 
-    public Like createLike(User user) {
-        var like = Like.create(user);
+    public Like createLike(User user, boolean existsLike) {
+        var like = Like.create(user, existsLike);
         return likeRepository.save(like);
     }
 

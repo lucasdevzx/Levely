@@ -22,11 +22,10 @@ public class LikeTrainingPlannerLibraryService {
     public LikeTrainingPlannerLibrary createLikeTrainingPlannerLibrary(TrainingPlannerLibrary trainingPlannerLibrary) {
         var user = authenticatedUser.getAuthenticatedUser();
 
-        if (likeTrainingPlannerLibraryRepository.existsByTrainingPlannerLibraryIdAndLikeUserId(trainingPlannerLibrary.getId(), user.getId())) {
-            throw new IllegalArgumentException("You can only like it once");
-        }
+        boolean existsLike = likeTrainingPlannerLibraryRepository
+                .existsByTrainingPlannerLibraryIdAndLikeUserId(trainingPlannerLibrary.getId(), user.getId());
 
-        var like = likeService.createLike(user);
+        var like = likeService.createLike(user, existsLike);
         var likeTrainingPlannerLibrary = LikeTrainingPlannerLibrary.create(like, trainingPlannerLibrary);
         return likeTrainingPlannerLibraryRepository.save(likeTrainingPlannerLibrary);
     }
