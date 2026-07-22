@@ -1,5 +1,6 @@
 package com.luken.levely.model;
 
+import com.luken.levely.common.exception.SocialInteractionException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Saved {
     public static Saved create(User user, boolean existsSaved) {
 
         if (existsSaved) {
-            throw new IllegalArgumentException("You can only save it once");
+            throw new SocialInteractionException("You can only save it once");
         }
 
         return new Saved(user);
