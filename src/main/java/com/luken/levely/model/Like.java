@@ -1,5 +1,6 @@
 package com.luken.levely.model;
 
+import com.luken.levely.common.exception.SocialInteractionException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Like {
     public static Like create(User user, boolean existsLike) {
 
         if (existsLike) {
-            throw new IllegalArgumentException("You can only like it once");
+            throw new SocialInteractionException("You can only like it once");
         }
 
         return new Like(user);
