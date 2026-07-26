@@ -25,7 +25,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "training_planners")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@NoArgsConstructor
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TrainingPlanner {

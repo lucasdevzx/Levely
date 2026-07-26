@@ -120,7 +120,6 @@ class TrainingPlannerTest {
 
             // ASSERT
             assertEquals(1, actualQuantity);
-
         }
     }
 
