@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -37,6 +38,12 @@ public class DayTrainingWorkoutLogController {
     public ResponseEntity<Page<DayTrainingWorkoutLogResponseDTO>> findAll(@RequestParam int page, @RequestParam int size) {
         Page<DayTrainingWorkoutLog> dayTrainingWorkoutLogs = dayTrainingWorkoutLogService.findAll(page, size);
         return ResponseEntity.ok().body(dayTrainingWorkoutLogs.map(dayTrainingWorkoutLogMapper::toDTO));
+    }
+
+    @GetMapping(value = "/completed")
+    public ResponseEntity<List<DayTrainingWorkoutLogResponseDTO>> findAllByCompletedTrue() {
+        List<DayTrainingWorkoutLog> dayTrainingWorkoutLogs = dayTrainingWorkoutLogService.findAllByCompletedTrue();
+        return ResponseEntity.ok().body(dayTrainingWorkoutLogMapper.toDTOs(dayTrainingWorkoutLogs));
     }
 
     @GetMapping(value = "/{dayTrainingWorkoutId}")
@@ -79,6 +86,12 @@ public class DayTrainingWorkoutLogController {
                 .toUri();
 
         return ResponseEntity.created(uri).body(setTimeLogMapper.toDTO(setTimeLog));
+    }
+
+    @PutMapping(value = "/{dayTrainingWorkoutLogId}/completed")
+    public ResponseEntity<DayTrainingWorkoutLogResponseDTO> updateCompleteDayTrainingWorkoutLog(@PathVariable UUID dayTrainingWorkoutLogId) {
+        var dayTrainingWorkoutLog = dayTrainingWorkoutLogService.updateCompleteDayTrainingWorkoutLog(dayTrainingWorkoutLogId);
+        return ResponseEntity.ok().body(dayTrainingWorkoutLogMapper.toDTO(dayTrainingWorkoutLog));
     }
 
     @DeleteMapping(value = "/{dayTrainingWorkoutLogId}")

@@ -1,6 +1,5 @@
 package com.luken.levely.service;
 
-import com.luken.levely.dto.request.DayTrainingWorkoutLogRequestDTO;
 import com.luken.levely.dto.request.SetLogRequestDTO;
 import com.luken.levely.dto.request.SetRepLogRequestDTO;
 import com.luken.levely.dto.request.SetTimeLogRequestDTO;
@@ -8,7 +7,6 @@ import com.luken.levely.mapper.DayTrainingWorkoutLogMapper;
 import com.luken.levely.model.*;
 import com.luken.levely.repository.DayTrainingWorkoutLogRepository;
 import com.luken.levely.repository.SetLogRepository;
-import com.luken.levely.repository.SetRepLogRepository;
 import com.luken.levely.security.auth.AuthenticatedUser;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.InvalidParameterException;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,6 +31,11 @@ public class DayTrainingWorkoutLogService {
 
     public Page<DayTrainingWorkoutLog> findAll(int page, int size) {
         return dayTrainingWorkoutLogRepository.findAll(PageRequest.of(page, size));
+    }
+
+    public List<DayTrainingWorkoutLog> findAllByCompletedTrue() {
+        return dayTrainingWorkoutLogRepository.findAllByCompletedTrueOrderByCreatedAtDesc()
+                .orElseThrow(() -> new EntityNotFoundException("Entity day training workout log not found"));
     }
 
     public DayTrainingWorkoutLog findById(UUID dayTrainingWorkoutLogId) {
@@ -81,6 +83,18 @@ public class DayTrainingWorkoutLogService {
         }
 
         return null;
+    }
+
+    public DayTrainingWorkoutLog updateCompleteDayTrainingWorkoutLog(UUID dayTrainingWorkoutLogId) {
+        var dayTrainingWorkoutLog = findById(dayTrainingWorkoutLogId);
+        var userOwnerDayTraining = dayTrainingWorkoutLog.getDayTraining().getTrainingPlanner().getUser();
+        var userOwnerWorkout = dayTrainingWorkoutLog.getWorkout().getUser();
+
+        authenticatedUser.ownershipValidator(userOwnerWorkout);
+        authenticatedUser.ownershipValidator(userOwnerDayTraining);
+
+        dayTrainingWorkoutLog.setCompleted(true);
+        return dayTrainingWorkoutLogRepository.save(dayTrainingWorkoutLog);
     }
 
     public void deleteDayTrainingWorkoutLog(UUID dayTrainingWorkoutLogId) {

@@ -6,6 +6,8 @@ import com.luken.levely.model.DayTrainingWorkoutLog;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface DayTrainingWorkoutLogMapper {
 
@@ -14,5 +16,9 @@ public interface DayTrainingWorkoutLogMapper {
     @Mapping(source = "dayTraining.id", target = "dayTrainingId")
     @Mapping(source = "workout.id", target = "workoutId")
     DayTrainingWorkoutLogResponseDTO toDTO(DayTrainingWorkoutLog entity);
+
+    @Mapping(source = "dayTraining.id", target = "dayTrainingId")
+    @Mapping(source = "workout.id", target = "workoutId")
+    List<DayTrainingWorkoutLogResponseDTO> toDTOs(List<DayTrainingWorkoutLog> entities);
 
 }

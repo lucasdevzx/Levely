@@ -38,6 +38,8 @@ public class DayTrainingWorkoutLog {
     @NonNull
     private Integer orderIndex;
 
+    @Setter
+    @Column(name = "completed")
     private boolean completed = false;
 
     @CreationTimestamp
