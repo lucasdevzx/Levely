@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -22,9 +23,9 @@ public class SetRepLogController {
     private final SetRepLogMapper setRepLogMapper;
 
     @GetMapping(value = "/{dayTrainingWorkoutLogId}/all")
-    public ResponseEntity<Stream<SetRepLogResponseDTO>> findAll(@PathVariable UUID dayTrainingWorkoutLogId) {
+    public ResponseEntity<List<SetRepLogResponseDTO>> findAll(@PathVariable UUID dayTrainingWorkoutLogId) {
         var setRepLogs = setRepLogService.findAll(dayTrainingWorkoutLogId);
-        return ResponseEntity.ok().body(setRepLogs.stream().map(setRepLogMapper::toDTO));
+        return ResponseEntity.ok().body(setRepLogMapper.toDTOs(setRepLogs));
     }
 
     @GetMapping(value = "/{setRepLogId}")
