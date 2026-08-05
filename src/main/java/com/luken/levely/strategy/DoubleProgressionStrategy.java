@@ -16,11 +16,7 @@ public class DoubleProgressionStrategy implements ProgressTrainingStrategy{
     public ProgressTrainingResponseDTO calculateProgression(Workout workout, List<SetRepLog> setRepLogs) {
         int quantitySets = setRepLogs.size();
         double maxWeightSet = setRepLogs.getLast().getWeight();
-        int setsWithMaxRep = calculateQuantitySetValid(setRepLogs, maxWeightSet);
-
-        if (quantitySets != setsWithMaxRep) {
-            throw new SetRepInvalidException("Sets that do not meet the minimum requirement");
-        }
+        calculateQuantitySetValid(setRepLogs, maxWeightSet, quantitySets);
 
         maxWeightSet += workout.getRecommendedWeightIncrement();
         return new ProgressTrainingResponseDTO(
@@ -30,7 +26,7 @@ public class DoubleProgressionStrategy implements ProgressTrainingStrategy{
         );
     }
 
-    public int calculateQuantitySetValid(List<SetRepLog> setRepLogs, double maxWeightSet) {
+    public void calculateQuantitySetValid(List<SetRepLog> setRepLogs, double maxWeightSet, int quantitySets) {
         int setsWithMaxRep = 0;
 
         for (SetRepLog setRepLog : setRepLogs) {
@@ -45,7 +41,9 @@ public class DoubleProgressionStrategy implements ProgressTrainingStrategy{
 
         }
 
-        return setsWithMaxRep;
+        if (quantitySets != setsWithMaxRep) {
+            throw new SetRepInvalidException("Sets that do not meet the minimum requirement");
+        }
     }
 
 }
