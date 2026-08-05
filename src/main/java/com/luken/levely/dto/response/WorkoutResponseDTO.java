@@ -6,6 +6,7 @@ public record WorkoutResponseDTO(
         UUID id,
         String name,
         String description,
+        Double recommendedWeightIncrement,
         Integer orderIndex
 ) {
 }

@@ -32,6 +32,9 @@ public class Workout {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "recomended_weight_increment")
+    private Double recommendedWeightIncrement = 2.5;
+
     @NonNull
     @Column(name = "order_index", nullable = false)
     private Integer orderIndex;
