@@ -26,7 +26,7 @@ public class DoubleProgressionStrategy implements ProgressTrainingStrategy{
         );
     }
 
-    public void calculateQuantitySetValid(List<SetRepLog> setRepLogs, double maxWeightSet, int quantitySets) {
+    private void calculateQuantitySetValid(List<SetRepLog> setRepLogs, double maxWeightSet, int quantitySets) {
         int setsWithMaxRep = 0;
 
         for (SetRepLog setRepLog : setRepLogs) {
