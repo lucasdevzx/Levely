@@ -16,7 +16,7 @@ public class LinearProgressionStrategy implements ProgressTrainingStrategy{
         int quantitySets = setRepLogs.size();
         double maxWeightSet = setRepLogs.getLast().getWeight();
         int targetReps = workout.getTargetReps();
-        validateSet(setRepLogs, maxWeightSet, targetReps);
+        validateSetRepLog(setRepLogs, maxWeightSet, targetReps);
 
         maxWeightSet += workout.getRecommendedWeightIncrement();
         return new ProgressTrainingResponseDTO(
@@ -26,7 +26,7 @@ public class LinearProgressionStrategy implements ProgressTrainingStrategy{
         );
     }
 
-    private void validateSet(List<SetRepLog> setRepLogs, double maxWeightSet, int targetReps) {
+    void validateSetRepLog(List<SetRepLog> setRepLogs, double maxWeightSet, int targetReps) {
 
         for (SetRepLog setRepLog : setRepLogs) {
 
