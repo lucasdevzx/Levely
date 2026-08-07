@@ -3,13 +3,16 @@ package com.luken.levely.strategy;
 import com.luken.levely.common.exception.SetRepInvalidException;
 import com.luken.levely.common.exception.SetRepWeightInvalidException;
 import com.luken.levely.dto.response.ProgressTrainingResponseDTO;
+import com.luken.levely.enums.ProgressTrainingType;
 import com.luken.levely.model.DayTrainingWorkoutLog;
 import com.luken.levely.model.SetLog;
 import com.luken.levely.model.SetRepLog;
 import com.luken.levely.model.Workout;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class DoubleProgressionStrategy implements ProgressTrainingStrategy{
 
     @Override
@@ -24,6 +27,11 @@ public class DoubleProgressionStrategy implements ProgressTrainingStrategy{
                 maxWeightSet,
                 8
         );
+    }
+
+    @Override
+    public ProgressTrainingType getProgressType() {
+        return ProgressTrainingType.DOUBLE;
     }
 
     void validateSetRepLog(List<SetRepLog> setRepLogs, double maxWeightSet, int quantitySets) {
