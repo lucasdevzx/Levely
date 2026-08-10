@@ -1,20 +1,16 @@
 package com.luken.levely.model;
 
 import com.luken.levely.common.exception.EndDateBeforeStartDateException;
-import com.luken.levely.common.exception.InvalidActionException;
 import com.luken.levely.common.exception.StartDateBeforeNowException;
 import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
-import com.luken.levely.dto.request.TrainingPlannerStatusRequestDTO;
 import com.luken.levely.enums.GoalType;
 import com.luken.levely.enums.PlannerStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.stereotype.Component;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -89,6 +85,12 @@ public class TrainingPlanner {
                 body.startDate(),
                 body.endDate(),
                 user);
+    }
+
+    public void importReset(User user, List<DayTraining> dayTrainings) {
+        id = null;
+        this.user = user;
+        this.dayTrainings = dayTrainings;
     }
 
     public void changePlannerStatus(PlannerStatus plannerStatus) {

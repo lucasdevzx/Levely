@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -51,7 +50,7 @@ public class DayTraining {
     @ManyToOne
     private TrainingPlanner trainingPlanner;
 
-    @OneToMany(mappedBy = "dayTraining")
+    @OneToMany(mappedBy = "dayTraining", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DayTrainingWorkout> dayTrainingWorkouts;
 
     public void associatePlanner(TrainingPlanner trainingPlanner) {
@@ -60,6 +59,12 @@ public class DayTraining {
 
     public static DayTraining create(DayTrainingRequestDTO body) {
         return new DayTraining(body.name(), body.notes(), body.dayOfWeek());
+    }
+
+    public void importReset(TrainingPlanner trainingPlanner, List<DayTrainingWorkout> dayTrainingWorkouts) {
+        id = null;
+        this.trainingPlanner = trainingPlanner;
+        this.dayTrainingWorkouts = dayTrainingWorkouts;
     }
 
     public void update(DayTrainingRequestDTO body) {

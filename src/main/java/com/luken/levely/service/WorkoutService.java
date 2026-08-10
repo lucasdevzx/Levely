@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,6 +26,11 @@ public class WorkoutService {
     public Page<Workout> findAll(int page, int size) {
         return workoutRepository
                 .findAll(PageRequest.of(page, size));
+    }
+
+    public List<Workout> findAllByDayTrainingWorkoutId(UUID dayTrainingWorkoutId) {
+        return workoutRepository.findAllByDayTrainingWorkoutsId(dayTrainingWorkoutId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity workout not found by day training workout id: " + dayTrainingWorkoutId)));
     }
 
     public Workout findById(UUID workoutId) {

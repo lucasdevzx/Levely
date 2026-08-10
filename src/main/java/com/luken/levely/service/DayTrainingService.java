@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,6 +22,11 @@ public class DayTrainingService {
 
     public Page<DayTraining> findAll(int page, int size) {
         return dayTrainingRepository.findAll(PageRequest.of(page, size));
+    }
+
+    public List<DayTraining> findAllByTrainingPlannerId(UUID trainingPlannerId) {
+        return dayTrainingRepository.findAllByTrainingPlannerId(trainingPlannerId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity day training not found by training planner id: " + trainingPlannerId)));
     }
 
     public DayTraining findById(UUID dayTrainingId) {

@@ -30,6 +30,11 @@ public class DayTrainingWorkoutService {
         return dayTrainingWorkoutRepository.findAll(PageRequest.of(page, size));
     }
 
+    public List<DayTrainingWorkout> findAllByDayTrainingId(UUID dayTrainingId) {
+        return dayTrainingWorkoutRepository.findAllByDayTrainingId(dayTrainingId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity day training workout not found by day training id: " + dayTrainingId)));
+    }
+
     public DayTrainingWorkout findById(UUID dayTrainingWorkoutId) {
         return dayTrainingWorkoutRepository.findById(dayTrainingWorkoutId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Entity day training workout not found by id: " + dayTrainingWorkoutId)));

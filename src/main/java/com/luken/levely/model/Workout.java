@@ -54,7 +54,7 @@ public class Workout {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "workout", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "workout", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<DayTrainingWorkout> dayTrainingWorkouts;
 
@@ -65,6 +65,12 @@ public class Workout {
                 body.orderIndex(),
                 user
         );
+    }
+
+    public void importReset(User user) {
+        id = null;
+        dayTrainingWorkouts = null;
+        this.user = user;
     }
 
     public void update(WorkoutRequestDTO body) {

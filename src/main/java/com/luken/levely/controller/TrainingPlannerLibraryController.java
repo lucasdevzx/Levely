@@ -20,6 +20,12 @@ public class TrainingPlannerLibraryController {
     private final TrainingPlannerLibraryService trainingPlannerLibraryService;
     private final TrainingPlannerLibraryMapper trainingPlannerLibraryMapper;
 
+    @PostMapping(value = "/{trainingPlannerId}/import")
+    public ResponseEntity<Void> importTrainingPlannerComplete(@PathVariable UUID trainingPlannerId) {
+        trainingPlannerLibraryService.importTrainingPlannerComplete(trainingPlannerId);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping(value = "/{trainingPlannerLibraryId}/like")
     public ResponseEntity<TrainingPlannerLibraryResponseDTO> addLike(@PathVariable UUID trainingPlannerLibraryId) {
         var trainingPlannerLibrary = trainingPlannerLibraryService.addLike(trainingPlannerLibraryId);
