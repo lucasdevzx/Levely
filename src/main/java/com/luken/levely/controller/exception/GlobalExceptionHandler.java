@@ -15,6 +15,23 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // NOT FOUND
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ExceptionStandart> handlerResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
+
+        ExceptionStandart error = new ExceptionStandart(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND,
+                ex.getApiError(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
     // BAD REQUEST
 
     @ExceptionHandler(StartDateBeforeNowException.class)

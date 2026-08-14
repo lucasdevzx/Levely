@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.request.SetLogRequestDTO;
 import com.luken.levely.dto.request.SetRepLogRequestDTO;
 import com.luken.levely.dto.request.SetTimeLogRequestDTO;
@@ -35,12 +37,14 @@ public class DayTrainingWorkoutLogService {
 
     public List<DayTrainingWorkoutLog> findAllByCompletedTrue() {
         return dayTrainingWorkoutLogRepository.findAllByCompletedTrueOrderByCreatedAtDesc()
-                .orElseThrow(() -> new EntityNotFoundException("Entity day training workout log not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Entity day training workout log not found", ApiError.RESOURCE_NOT_FOUND));
     }
 
     public DayTrainingWorkoutLog findById(UUID dayTrainingWorkoutLogId) {
         return dayTrainingWorkoutLogRepository.findById(dayTrainingWorkoutLogId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity day training workout log not found by id: " + dayTrainingWorkoutLogId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity day training workout log not found by id: " + dayTrainingWorkoutLogId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public DayTrainingWorkoutLog createDayTrainingWorkoutLog(UUID dayTrainingWorkoutId) {

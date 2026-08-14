@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.model.SetRepLog;
 import com.luken.levely.model.SetTimeLog;
 import com.luken.levely.repository.SetTimeLogRepository;
@@ -18,11 +20,13 @@ public class SetTimeLogService {
 
     public SetTimeLog findById(UUID setTimeLogId) {
         return setTimeLogRepository.findById(setTimeLogId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity set time log not found by id: " + setTimeLogId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity set time log not found by id: " + setTimeLogId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public List<SetTimeLog> findAll(UUID dayTrainingWorkoutLogId) {
-        return setTimeLogRepository.findByDayTrainingWorkoutLogId(dayTrainingWorkoutLogId);
+        return setTimeLogRepository.findByDayTrainingWorkoutLogId(dayTrainingWorkoutLogId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity set time log not found by day training workout log id: " + dayTrainingWorkoutLogId), ApiError.RESOURCE_NOT_FOUND));
     }
-
 }

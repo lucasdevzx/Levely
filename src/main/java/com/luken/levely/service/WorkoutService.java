@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.request.WorkoutRequestDTO;
 import com.luken.levely.mapper.WorkoutMapper;
 import com.luken.levely.model.Workout;
@@ -30,12 +32,14 @@ public class WorkoutService {
 
     public List<Workout> findAllByDayTrainingWorkoutId(UUID dayTrainingWorkoutId) {
         return workoutRepository.findAllByDayTrainingWorkoutsId(dayTrainingWorkoutId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity workout not found by day training workout id: " + dayTrainingWorkoutId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity workout not found by day training workout id: " + dayTrainingWorkoutId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public Workout findById(UUID workoutId) {
         return workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity workout not found by id: " + workoutId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity workout not found by id: " + workoutId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public Workout createWorkout(WorkoutRequestDTO body) {

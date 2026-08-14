@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerStatusRequestDTO;
@@ -35,7 +37,9 @@ public class TrainingPlannerService {
 
     public Page<TrainingPlanner> findAllMe(int page, int size) {
         var user = authenticatedUser.getAuthenticatedUser();
-        Page<TrainingPlanner> trainingPlanners = trainingPlannerRepository.findAllByUserId(user.getId(), PageRequest.of(page, size));
+        Page<TrainingPlanner> trainingPlanners = trainingPlannerRepository.findAllByUserId(user.getId(), PageRequest.of(page, size))
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity training planner not found by user id: " + user.getId()), ApiError.RESOURCE_NOT_FOUND));
 
         for (TrainingPlanner trainingPlanner : trainingPlanners) {
             trainingPlanner.calculateCurrentWeek();
@@ -46,7 +50,8 @@ public class TrainingPlannerService {
 
     public TrainingPlanner findById(UUID trainingPlannerId) {
         TrainingPlanner trainingPlanner = trainingPlannerRepository.findById(trainingPlannerId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity training planner not found by id: " + trainingPlannerId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity training planner not found by id: " + trainingPlannerId), ApiError.RESOURCE_NOT_FOUND));
 
         trainingPlanner.calculateCurrentWeek();
         return trainingPlanner;

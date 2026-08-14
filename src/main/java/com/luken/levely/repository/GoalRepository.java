@@ -6,13 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, UUID> {
 
-    Page<Goal> findAllByUserId(Pageable pageable, UUID userId);
+    Optional<Page<Goal>> findAllByUserId(Pageable pageable, UUID userId);
 
-    Page<Goal> findAllByWorkoutId(Pageable pageable, UUID workoutId);
+    Optional<Page<Goal>> findAllByWorkoutId(Pageable pageable, UUID workoutId);
 
 }

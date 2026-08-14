@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.request.GoalRequestDTO;
 import com.luken.levely.mapper.GoalMapper;
 import com.luken.levely.model.Goal;
@@ -25,19 +27,24 @@ public class GoalService {
 
     public Page<Goal> findAllMe(int page, int size) {
         var user = authenticatedUser.getAuthenticatedUser();
-        return goalRepository.findAllByUserId(PageRequest.of(page, size), user.getId());
+        return goalRepository.findAllByUserId(PageRequest.of(page, size), user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity goal not found by user id: " + user.getId()), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public Page<Goal> findAllByWorkoutId(int page, int size, UUID workoutId) {
         var workout = workoutService.findById(workoutId);
 
         authenticatedUser.ownershipValidator(workout.getUser());
-        return goalRepository.findAllByWorkoutId(PageRequest.of(page, size), workout.getId());
+        return goalRepository.findAllByWorkoutId(PageRequest.of(page, size), workout.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity goal not found by workout id: " + workoutId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public Goal findById(UUID goalId) {
         return goalRepository.findById(goalId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity goal not found by id: " + goalId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity goal not found by id: " + goalId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public Goal createGoal(GoalRequestDTO body, UUID workoutId) {

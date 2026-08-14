@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.request.RegisterUserRequestDTO;
 import com.luken.levely.mapper.UserMapper;
 import com.luken.levely.model.User;
@@ -19,7 +21,8 @@ public class UserService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity user not found by email: " + email)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity user not found by email: " + email), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public User registerUser(RegisterUserRequestDTO body, String encodedPassword) {

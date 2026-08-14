@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.UnauthorizedException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.request.LoginUserRequestDTO;
 import com.luken.levely.dto.request.RegisterUserRequestDTO;
 import com.luken.levely.model.User;
@@ -38,7 +40,7 @@ public class AuthenticationService {
             User user = principal != null ? principal.getUser() : null;
 
             if (user == null) {
-                throw new NullPointerException("User null");
+                throw new UnauthorizedException("User does not exist", ApiError.UNAUTHORIZED);
             }
 
             return tokenConfig.generateToken(user);

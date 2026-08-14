@@ -62,7 +62,7 @@ class TrainingPlannerServiceTest {
 
         BDDMockito.when(authenticatedUser.getAuthenticatedUser()).thenReturn(user);
         BDDMockito.when(user.getId()).thenReturn(userId);
-        BDDMockito.when(trainingPlannerRepository.findAllByUserId(userId, PageRequest.of(page, size))).thenReturn(trainingPlannerPage);
+        BDDMockito.when(trainingPlannerRepository.findAllByUserId(userId, PageRequest.of(page, size))).thenReturn(Optional.of(trainingPlannerPage));
 
         // ACT
         Page<TrainingPlanner> result = trainingPlannerService.findAllMe(page, size);

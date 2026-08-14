@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.model.DayTraining;
 import com.luken.levely.repository.DayTrainingRepository;
@@ -26,12 +28,14 @@ public class DayTrainingService {
 
     public List<DayTraining> findAllByTrainingPlannerId(UUID trainingPlannerId) {
         return dayTrainingRepository.findAllByTrainingPlannerId(trainingPlannerId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity day training not found by training planner id: " + trainingPlannerId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity day training not found by training planner id: " + trainingPlannerId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public DayTraining findById(UUID dayTrainingId) {
           return dayTrainingRepository.findById(dayTrainingId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity day training not found by id: " + dayTrainingId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity day training not found by id: " + dayTrainingId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public DayTraining updateDayTraining(UUID dayTrainingId, DayTrainingRequestDTO body) {

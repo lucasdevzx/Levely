@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.model.Library;
 import com.luken.levely.model.TrainingPlannerLibrary;
 import com.luken.levely.repository.LibraryRepository;
@@ -19,7 +21,8 @@ public class LibraryService {
 
     public Library findById(UUID libraryId) {
         return libraryRepository.findById(libraryId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity library not found by id: " + libraryId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity library not found by id: " + libraryId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public Library createLibrary() {

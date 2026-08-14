@@ -1,5 +1,7 @@
 package com.luken.levely.service;
 
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.model.SetLog;
 import com.luken.levely.repository.SetLogRepository;
 import com.luken.levely.security.auth.AuthenticatedUser;
@@ -19,7 +21,8 @@ public class SetLogService {
 
     public SetLog findById(UUID setLogId) {
         return setLogRepository.findById(setLogId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Entity setlog not found by id: " + setLogId)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity setlog not found by id: " + setLogId), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public void deleteSetLog(UUID setLogId) {
