@@ -2,6 +2,7 @@ package com.luken.levely.model;
 
 import com.luken.levely.common.exception.EndDateBeforeStartDateException;
 import com.luken.levely.common.exception.StartDateBeforeNowException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.request.DayTrainingRequestDTO;
 import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
 import com.luken.levely.enums.GoalType;
@@ -132,13 +133,20 @@ public class TrainingPlanner {
     public static void validateDate(LocalDate startDate, LocalDate endDate) {
 
         if (endDate.isBefore(startDate)) {
-            throw new EndDateBeforeStartDateException("The end date cannot be before the start date");
+            throw new EndDateBeforeStartDateException(
+                    "The end date cannot be before the start date",
+                    ApiError.DATE_INVALID,
+                    startDate,
+                    endDate);
         }
 
         if (startDate.isBefore(LocalDate.now())) {
-            throw new StartDateBeforeNowException("The start date cannot be before the date now");
+            throw new StartDateBeforeNowException(
+                    "The start date cannot be before the date now",
+                    ApiError.DATE_INVALID,
+                    startDate,
+                    LocalDate.now());
         }
-
     }
 
     public void calculateTotalWeeks() {

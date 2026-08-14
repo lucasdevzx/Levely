@@ -38,6 +38,9 @@ public class DayTrainingWorkoutLog {
     @NonNull
     private Integer orderIndex;
 
+    @Column(name = "body_weight")
+    private Double bodyWeight;
+
     @Setter
     @Column(name = "completed")
     private boolean completed = false;

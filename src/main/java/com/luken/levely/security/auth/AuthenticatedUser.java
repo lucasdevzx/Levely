@@ -1,6 +1,8 @@
 package com.luken.levely.security.auth;
 
 import com.luken.levely.common.exception.InvalidActionException;
+import com.luken.levely.common.exception.UnauthorizedException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.model.User;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -16,7 +18,7 @@ public class AuthenticatedUser {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
-            throw new InvalidActionException("User not authenticated");
+            throw new UnauthorizedException("User not authenticated", ApiError.UNAUTHORIZED);
         }
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -27,7 +29,7 @@ public class AuthenticatedUser {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
-            throw new InvalidActionException("User not authenticated");
+            throw new UnauthorizedException("User not authenticated", ApiError.UNAUTHORIZED);
         }
 
         return  (UserDetailsImpl) authentication.getPrincipal();

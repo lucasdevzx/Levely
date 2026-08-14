@@ -2,6 +2,7 @@ package com.luken.levely.strategy;
 
 import com.luken.levely.common.exception.SetRepInvalidException;
 import com.luken.levely.common.exception.SetRepWeightInvalidException;
+import com.luken.levely.controller.exception.ApiError;
 import com.luken.levely.dto.response.ProgressTrainingResponseDTO;
 import com.luken.levely.enums.ProgressTrainingType;
 import com.luken.levely.model.DayTrainingWorkoutLog;
@@ -39,17 +40,28 @@ public class DoubleProgressionStrategy implements ProgressTrainingStrategy{
         for (SetRepLog setRepLog : setRepLogs) {
 
             if (setRepLog.getWeight() != maxWeightSet) {
-                throw new SetRepWeightInvalidException("All your sets need to have the same weight");
+                throw new SetRepWeightInvalidException(
+                        "All your sets need to have the same weight",
+                        ApiError.SET_INVALID,
+                        setRepLog.getWeight(),
+                        maxWeightSet);
             }
 
             if (setRepLog.getReps() < 8) {
-                throw new SetRepInvalidException("Sets that do not meet the minimum requirement of eight");
+                throw new SetRepInvalidException(
+                        "Sets that do not meet the minimum requirement of eight",
+                        ApiError.SET_INVALID,
+                        setRepLog.getReps(),
+                        8);
             }
 
             if (setRepLog.getReps() < 12) {
-                throw new SetRepInvalidException("Sets that do not meet the minimum requirement of twelve");
+                throw new SetRepInvalidException(
+                        "Sets that do not meet the minimum requirement of twelve",
+                        ApiError.SET_INVALID,
+                        setRepLog.getReps(),
+                        12);
             }
-
         }
     }
 
