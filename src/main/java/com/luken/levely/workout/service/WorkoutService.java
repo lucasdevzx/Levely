@@ -1,0 +1,64 @@
+package com.luken.levely.workout.service;
+
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.common.exception.controller.ApiError;
+import com.luken.levely.workout.dto.WorkoutRequestDTO;
+import com.luken.levely.workout.mapper.WorkoutMapper;
+import com.luken.levely.workout.model.Workout;
+import com.luken.levely.workout.repository.WorkoutRepository;
+import com.luken.levely.security.auth.AuthenticatedUser;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class WorkoutService {
+
+    private final WorkoutRepository workoutRepository;
+    private final WorkoutMapper workoutMapper;
+
+    private final AuthenticatedUser authenticatedUser;
+
+    public Page<Workout> findAll(int page, int size) {
+        return workoutRepository
+                .findAll(PageRequest.of(page, size));
+    }
+
+    public List<Workout> findAllByDayTrainingWorkoutId(UUID dayTrainingWorkoutId) {
+        return workoutRepository.findAllByDayTrainingWorkoutsId(dayTrainingWorkoutId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity workout not found by day training workout id: " + dayTrainingWorkoutId), ApiError.RESOURCE_NOT_FOUND));
+    }
+
+    public Workout findById(UUID workoutId) {
+        return workoutRepository.findById(workoutId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity workout not found by id: " + workoutId), ApiError.RESOURCE_NOT_FOUND));
+    }
+
+    public Workout createWorkout(WorkoutRequestDTO body) {
+        var user = authenticatedUser.getAuthenticatedUser();
+        Workout workout = workoutMapper.toEntity(body, user);
+        return workoutRepository.save(workout);
+    }
+
+    public Workout updateWorkout(UUID workoutId, WorkoutRequestDTO body) {
+        var workout = findById(workoutId);
+        authenticatedUser.ownershipValidator(workout.getUser());
+
+        workout.update(body);
+        return workoutRepository.save(workout);
+    }
+
+    public void deleteWorkout(UUID workoutId) {
+        var workout = findById(workoutId);
+        authenticatedUser.ownershipValidator(workout.getUser());
+
+        workoutRepository.deleteById(workoutId);
+    }
+}

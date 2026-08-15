@@ -2,22 +2,16 @@ package com.luken.levely.model;
 
 import com.luken.levely.common.exception.EndDateBeforeStartDateException;
 import com.luken.levely.common.exception.StartDateBeforeNowException;
-import com.luken.levely.dto.request.DayTrainingRequestDTO;
-import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
-import com.luken.levely.enums.PlannerStatus;
+import com.luken.levely.daytraining.dto.DayTrainingRequestDTO;
+import com.luken.levely.trainingplanner.enums.PlannerStatus;
+import com.luken.levely.trainingplanner.model.TrainingPlanner;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

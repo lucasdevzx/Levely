@@ -1,11 +1,12 @@
 package com.luken.levely.strategy;
 
-import com.luken.levely.common.exception.SetRepInvalidException;
-import com.luken.levely.common.exception.SetRepWeightInvalidException;
-import com.luken.levely.dto.request.SetRepLogRequestDTO;
-import com.luken.levely.model.DayTrainingWorkoutLog;
-import com.luken.levely.model.SetRepLog;
-import com.luken.levely.model.Workout;
+import com.luken.levely.progress.strategy.LinearProgressionStrategy;
+import com.luken.levely.setlog.exception.SetRepInvalidException;
+import com.luken.levely.setlog.exception.SetRepWeightInvalidException;
+import com.luken.levely.setlog.dto.SetRepLogRequestDTO;
+import com.luken.levely.daytraining.model.DayTrainingWorkoutLog;
+import com.luken.levely.setlog.model.SetRepLog;
+import com.luken.levely.workout.model.Workout;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;

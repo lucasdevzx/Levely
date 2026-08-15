@@ -1,6 +1,6 @@
 package com.luken.levely.common.exception;
 
-import com.luken.levely.controller.exception.ApiError;
+import com.luken.levely.common.exception.controller.ApiError;
 
 public class InvalidActionException extends RuntimeException{
 

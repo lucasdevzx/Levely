@@ -1,15 +1,12 @@
 package com.luken.levely.security.auth;
 
-import com.luken.levely.common.exception.InvalidActionException;
 import com.luken.levely.common.exception.UnauthorizedException;
-import com.luken.levely.controller.exception.ApiError;
-import com.luken.levely.model.User;
+import com.luken.levely.common.exception.controller.ApiError;
+import com.luken.levely.user.User;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 public class AuthenticatedUser {

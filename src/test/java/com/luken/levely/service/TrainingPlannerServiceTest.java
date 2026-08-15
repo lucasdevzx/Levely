@@ -1,10 +1,12 @@
 package com.luken.levely.service;
 
-import com.luken.levely.dto.request.TrainingPlannerRequestDTO;
-import com.luken.levely.enums.GoalType;
-import com.luken.levely.model.TrainingPlanner;
-import com.luken.levely.model.User;
-import com.luken.levely.repository.TrainingPlannerRepository;
+import com.luken.levely.common.exception.ResourceNotFoundException;
+import com.luken.levely.trainingplanner.dto.TrainingPlannerRequestDTO;
+import com.luken.levely.goal.enums.GoalType;
+import com.luken.levely.trainingplanner.model.TrainingPlanner;
+import com.luken.levely.trainingplanner.service.TrainingPlannerService;
+import com.luken.levely.user.User;
+import com.luken.levely.trainingplanner.repository.TrainingPlannerRepository;
 import com.luken.levely.security.auth.AuthenticatedUser;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -79,7 +80,7 @@ class TrainingPlannerServiceTest {
         BDDMockito.when(trainingPlannerRepository.findById(trainingPlannerId)).thenReturn(Optional.empty());
 
         // ASSERT + ACT
-        assertThrows(EntityNotFoundException.class,
+        assertThrows(ResourceNotFoundException.class,
                 () -> trainingPlannerService.findById(trainingPlannerId));
     }
 

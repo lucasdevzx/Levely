@@ -1,0 +1,101 @@
+package com.luken.levely.daytraining.controller;
+
+import com.luken.levely.setlog.dto.SetRepLogRequestDTO;
+import com.luken.levely.setlog.dto.SetTimeLogRequestDTO;
+import com.luken.levely.daytraining.dto.DayTrainingWorkoutLogResponseDTO;
+import com.luken.levely.setlog.dto.SetRepLogResponseDTO;
+import com.luken.levely.setlog.dto.SetTimeLogResponseDTO;
+import com.luken.levely.daytraining.mapper.DayTrainingWorkoutLogMapper;
+import com.luken.levely.setlog.mapper.SetRepLogMapper;
+import com.luken.levely.setlog.mapper.SetTimeLogMapper;
+import com.luken.levely.daytraining.model.DayTrainingWorkoutLog;
+import com.luken.levely.setlog.model.SetRepLog;
+import com.luken.levely.setlog.model.SetTimeLog;
+import com.luken.levely.daytraining.service.DayTrainingWorkoutLogService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(value = "/daytrainingworkoutlogs")
+@RequiredArgsConstructor
+public class DayTrainingWorkoutLogController {
+
+    private final DayTrainingWorkoutLogService dayTrainingWorkoutLogService;
+    private final DayTrainingWorkoutLogMapper dayTrainingWorkoutLogMapper;
+
+    private final SetRepLogMapper setRepLogMapper;
+    private final SetTimeLogMapper setTimeLogMapper;
+
+    @GetMapping
+    public ResponseEntity<Page<DayTrainingWorkoutLogResponseDTO>> findAll(@RequestParam int page, @RequestParam int size) {
+        Page<DayTrainingWorkoutLog> dayTrainingWorkoutLogs = dayTrainingWorkoutLogService.findAll(page, size);
+        return ResponseEntity.ok().body(dayTrainingWorkoutLogs.map(dayTrainingWorkoutLogMapper::toDTO));
+    }
+
+    @GetMapping(value = "/completed")
+    public ResponseEntity<List<DayTrainingWorkoutLogResponseDTO>> findAllByCompletedTrue() {
+        List<DayTrainingWorkoutLog> dayTrainingWorkoutLogs = dayTrainingWorkoutLogService.findAllByCompletedTrue();
+        return ResponseEntity.ok().body(dayTrainingWorkoutLogMapper.toDTOs(dayTrainingWorkoutLogs));
+    }
+
+    @GetMapping(value = "/{dayTrainingWorkoutId}")
+    public ResponseEntity<DayTrainingWorkoutLogResponseDTO> findById(@PathVariable UUID dayTrainingWorkoutId) {
+        var dayTrainingWorkoutLog = dayTrainingWorkoutLogService.findById(dayTrainingWorkoutId);
+        return ResponseEntity.ok().body(dayTrainingWorkoutLogMapper.toDTO(dayTrainingWorkoutLog));
+    }
+
+    @PostMapping(value = "/{dayTrainingWorkoutId}")
+    public ResponseEntity<DayTrainingWorkoutLogResponseDTO> createDayTrainingWorkoutLog(@PathVariable UUID dayTrainingWorkoutId) {
+        var dayTrainingWorkoutLog = dayTrainingWorkoutLogService.createDayTrainingWorkoutLog(dayTrainingWorkoutId);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromPath("/{dayTrainingWorkoutLogId}")
+                .buildAndExpand(dayTrainingWorkoutLog.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(dayTrainingWorkoutLogMapper.toDTO(dayTrainingWorkoutLog));
+    }
+
+    @PostMapping(value = "/{dayTrainingWorkoutLogId}/setreplog")
+    public ResponseEntity<SetRepLogResponseDTO> addSetRepLog(@PathVariable UUID dayTrainingWorkoutLogId, @RequestBody SetRepLogRequestDTO body) {
+        var setRepLog = (SetRepLog) dayTrainingWorkoutLogService.addSetLog(dayTrainingWorkoutLogId, body);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromPath("/{setRepLogId}")
+                .buildAndExpand(setRepLog.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(setRepLogMapper.toDTO(setRepLog));
+    }
+
+    @PostMapping(value = "/{dayTrainingWorkoutLogId}/settimelog")
+    public ResponseEntity<SetTimeLogResponseDTO> addSetTimeLog(@PathVariable UUID dayTrainingWorkoutLogId, @RequestBody SetTimeLogRequestDTO body) {
+        var setTimeLog = (SetTimeLog) dayTrainingWorkoutLogService.addSetLog(dayTrainingWorkoutLogId, body);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromPath("/{setTimeLogId}")
+                .buildAndExpand(setTimeLog.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(setTimeLogMapper.toDTO(setTimeLog));
+    }
+
+    @PutMapping(value = "/{dayTrainingWorkoutLogId}/completed")
+    public ResponseEntity<DayTrainingWorkoutLogResponseDTO> updateCompleteDayTrainingWorkoutLog(@PathVariable UUID dayTrainingWorkoutLogId) {
+        var dayTrainingWorkoutLog = dayTrainingWorkoutLogService.updateCompleteDayTrainingWorkoutLog(dayTrainingWorkoutLogId);
+        return ResponseEntity.ok().body(dayTrainingWorkoutLogMapper.toDTO(dayTrainingWorkoutLog));
+    }
+
+    @DeleteMapping(value = "/{dayTrainingWorkoutLogId}")
+    public ResponseEntity<Void> deleteDayTrainingWorkoutLog(@PathVariable UUID dayTrainingWorkoutLogId) {
+        dayTrainingWorkoutLogService.deleteDayTrainingWorkoutLog(dayTrainingWorkoutLogId);
+        return ResponseEntity.noContent().build();
+    }
+}

@@ -1,6 +1,8 @@
 package com.luken.levely.model;
 
-import com.luken.levely.common.exception.SocialInteractionException;
+import com.luken.levely.social.exception.SocialInteractionException;
+import com.luken.levely.social.like.Like;
+import com.luken.levely.user.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

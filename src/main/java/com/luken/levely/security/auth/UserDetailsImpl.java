@@ -1,6 +1,6 @@
 package com.luken.levely.security.auth;
 
-import com.luken.levely.model.User;
+import com.luken.levely.user.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;

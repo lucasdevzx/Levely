@@ -1,7 +1,7 @@
 package com.luken.levely.security.config;
 
 import com.luken.levely.security.auth.UserDetailsImpl;
-import com.luken.levely.service.UserService;
+import com.luken.levely.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
