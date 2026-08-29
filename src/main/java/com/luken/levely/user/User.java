@@ -1,5 +1,6 @@
 package com.luken.levely.user;
 
+import com.luken.levely.social.profile.Profile;
 import com.luken.levely.user.enums.Gender;
 import com.luken.levely.security.auth.UserRole;
 import jakarta.persistence.*;
@@ -66,6 +67,10 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Setter
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profile profile;
 
     public static User create(
             String firstName,
