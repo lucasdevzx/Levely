@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: levely
+  profiles:
+    active: dev
+
+logging:
+  level:
+    org.springframework.security: DEBUG
