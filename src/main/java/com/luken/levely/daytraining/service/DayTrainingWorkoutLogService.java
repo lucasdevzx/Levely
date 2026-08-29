@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,7 +58,7 @@ public class DayTrainingWorkoutLogService {
         authenticatedUser.ownershipValidator(userOwnerWorkout);
         authenticatedUser.ownershipValidator(userOwnerDayTraining);
 
-        var dayTrainingWorkoutLog = DayTrainingWorkoutLog.create(dayTrainingWorkout);
+        var dayTrainingWorkoutLog = dayTrainingWorkoutLogMapper.toEntity(dayTrainingWorkout);
         return dayTrainingWorkoutLogRepository.save(dayTrainingWorkoutLog);
     }
 
@@ -100,6 +101,8 @@ public class DayTrainingWorkoutLogService {
         authenticatedUser.ownershipValidator(userOwnerDayTraining);
 
         dayTrainingWorkoutLog.setCompleted(true);
+        dayTrainingWorkoutLog.setCompletedAt(LocalDateTime.now());
+        dayTrainingWorkoutLog.calculateTrainingTime();
         return dayTrainingWorkoutLogRepository.save(dayTrainingWorkoutLog);
     }
 

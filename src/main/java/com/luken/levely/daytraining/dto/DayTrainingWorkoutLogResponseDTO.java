@@ -9,6 +9,8 @@ public record DayTrainingWorkoutLogResponseDTO(
         UUID workoutId,
         Integer orderIndex,
         boolean completed,
+        LocalDateTime completedAt,
+        long timeTraining,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

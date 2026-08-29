@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,6 +46,13 @@ public class DayTrainingWorkoutLog {
     @Column(name = "completed")
     private boolean completed = false;
 
+    @Setter
+    @Column(name = "completed_at")
+    private LocalDateTime completedAt;
+
+    @Column(name = "time_training")
+    private long timeTraining;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -66,5 +74,9 @@ public class DayTrainingWorkoutLog {
 
     public void addSetLogs(SetLog setLog) {
         setLogs.addLast(setLog);
+    }
+
+    public void calculateTrainingTime() {
+        timeTraining = ChronoUnit.MINUTES.between(createdAt, completedAt);
     }
 }
