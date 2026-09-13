@@ -19,7 +19,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +51,22 @@ public class DayTrainingWorkoutLogService {
         return dayTrainingWorkoutLogRepository.findById(dayTrainingWorkoutLogId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Entity day training workout log not found by id: " + dayTrainingWorkoutLogId), ApiError.RESOURCE_NOT_FOUND));
+    }
+
+    public Double findTotalVolumeByActualMonth() {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.with(TemporalAdjusters.firstDayOfMonth());
+
+        var dayTrainingWorkoutLogs = dayTrainingWorkoutLogRepository.findAllByCreatedAtBetween(startDate, endDate)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Entity day training workout log not found", ApiError.RESOURCE_NOT_FOUND));
+
+        return dayTrainingWorkoutLogs.stream().map(dayTrainingWorkoutLog -> {
+            return dayTrainingWorkoutLog.getSetLogs().stream()
+                   .filter(setLog -> setLog instanceof SetRepLog)
+                   .map(setLog -> (SetRepLog) setLog)
+                   .mapToDouble(SetRepLog::getWeight).sum();
+        }).reduce(0.0, Double::sum);
     }
 
     public DayTrainingWorkoutLog createDayTrainingWorkoutLog(UUID dayTrainingWorkoutId) {

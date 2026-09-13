@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,5 +18,7 @@ public interface DayTrainingWorkoutLogRepository extends JpaRepository<DayTraini
     Page<DayTrainingWorkoutLog> findAll(Pageable pageable);
 
     Optional<List<DayTrainingWorkoutLog>> findAllByCompletedTrueOrderByCreatedAtDesc();
+
+    Optional<List<DayTrainingWorkoutLog>> findAllByCreatedAtBetween(LocalDateTime createdAt, LocalDateTime createdAt2);
 
 }

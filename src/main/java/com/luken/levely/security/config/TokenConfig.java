@@ -40,6 +40,6 @@ public class TokenConfig {
     }
 
     public Instant expirationAt() {
-        return Instant.now().plus(600, ChronoUnit.SECONDS); // 10 Minutes
+        return Instant.now().plus(60000, ChronoUnit.SECONDS); // 10 Minutes // Remove two zeros to make it 10 seconds
     }
 }
