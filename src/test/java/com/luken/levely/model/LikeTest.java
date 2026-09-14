@@ -20,7 +20,6 @@ class LikeTest {
         // ASSERT + ACT
         assertThrows(SocialInteractionException.class,
                 () -> Like.create(user, existsLike));
-
     }
 
     @Test
