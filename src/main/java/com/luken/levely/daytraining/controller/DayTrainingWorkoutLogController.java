@@ -51,6 +51,12 @@ public class DayTrainingWorkoutLogController {
         return ResponseEntity.ok().body(dayTrainingWorkoutLogMapper.toDTO(dayTrainingWorkoutLog));
     }
 
+    @GetMapping(value = "/daytrainingworkout/{dayTrainingWorkoutId}")
+    public ResponseEntity<DayTrainingWorkoutLogResponseDTO> findByDayTrainingWorkoutId(@PathVariable UUID dayTrainingWorkoutId) {
+        var dayTrainingWorkoutLog = dayTrainingWorkoutLogService.findByDayTrainingWorkoutId(dayTrainingWorkoutId);
+        return ResponseEntity.ok().body(dayTrainingWorkoutLogMapper.toDTO(dayTrainingWorkoutLog));
+    }
+
     @GetMapping(value = "/volume/actualmonth")
     public ResponseEntity<Double> findTotalVolumeByActualMonth() {
         Double totalVolume = dayTrainingWorkoutLogService.findTotalVolumeByActualMonth();

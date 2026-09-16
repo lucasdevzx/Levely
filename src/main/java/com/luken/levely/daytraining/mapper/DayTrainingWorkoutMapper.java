@@ -17,6 +17,7 @@ public interface DayTrainingWorkoutMapper {
 
     @Mapping(source = "dayTraining.id", target = "dayTrainingId")
     @Mapping(source = "workout.id", target = "workoutId")
+    @Mapping(source = "workout.name", target = "workoutName")
     DayTrainingWorkoutResponseDTO toDTO(DayTrainingWorkout entity);
 
 }

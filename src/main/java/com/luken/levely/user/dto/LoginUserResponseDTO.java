@@ -1,6 +1,7 @@
 package com.luken.levely.user.dto;
 
 public record LoginUserResponseDTO(
-        String token
+        String token,
+        String name
 ) {
 }

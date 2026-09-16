@@ -53,6 +53,12 @@ public class DayTrainingWorkoutLogService {
                         String.format("Entity day training workout log not found by id: " + dayTrainingWorkoutLogId), ApiError.RESOURCE_NOT_FOUND));
     }
 
+    public DayTrainingWorkoutLog findByDayTrainingWorkoutId(UUID dayTrainingWorkoutId) {
+        return dayTrainingWorkoutLogRepository.findByDayTrainingWorkoutId(dayTrainingWorkoutId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity day training workout log not found by day training workout id: " + dayTrainingWorkoutId), ApiError.RESOURCE_NOT_FOUND));
+    }
+
     public Double findTotalVolumeByActualMonth() {
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate.with(TemporalAdjusters.firstDayOfMonth());

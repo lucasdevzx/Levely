@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -29,7 +31,7 @@ public class AuthenticationService {
         return userService.registerUser(body, encodedPassword);
     }
 
-    public String loginUser(LoginUserRequestDTO body) {
+    public Map<String, String> loginUser(LoginUserRequestDTO body) {
             UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                     body.email(),
                     body.password()
@@ -44,6 +46,11 @@ public class AuthenticationService {
                 throw new UnauthorizedException("User does not exist", ApiError.UNAUTHORIZED);
             }
 
-            return tokenConfig.generateToken(user);
+            var token = tokenConfig.generateToken(user);
+            var name = user.getFirstName();
+            return Map.of(
+                    "token", token,
+                    "name", name
+            );
     }
 }

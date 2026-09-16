@@ -10,7 +10,7 @@ public record DayTrainingWorkoutLogResponseDTO(
         Integer orderIndex,
         boolean completed,
         LocalDateTime completedAt,
-        long timeTraining,
+        String timeTraining,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

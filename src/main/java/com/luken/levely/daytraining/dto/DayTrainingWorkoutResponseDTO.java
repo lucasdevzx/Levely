@@ -6,6 +6,7 @@ public record DayTrainingWorkoutResponseDTO(
         UUID id,
         UUID dayTrainingId,
         UUID workoutId,
-        Integer orderIndex
+        Integer orderIndex,
+        String workoutName
 ) {
 }

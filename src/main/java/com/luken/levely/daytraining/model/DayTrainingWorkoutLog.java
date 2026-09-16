@@ -36,6 +36,11 @@ public class DayTrainingWorkoutLog {
     @NonNull
     private Workout workout;
 
+    @ManyToOne
+    @JoinColumn(name = "day_training_workout_id")
+    @NonNull
+    private DayTrainingWorkout dayTrainingWorkout;
+
     @NonNull
     private Integer orderIndex;
 
@@ -51,7 +56,7 @@ public class DayTrainingWorkoutLog {
     private LocalDateTime completedAt;
 
     @Column(name = "time_training")
-    private long timeTraining;
+    private String timeTraining;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -68,6 +73,7 @@ public class DayTrainingWorkoutLog {
         return new DayTrainingWorkoutLog(
                 dayTrainingWorkout.getDayTraining(),
                 dayTrainingWorkout.getWorkout(),
+                dayTrainingWorkout,
                 dayTrainingWorkout.getOrderIndex()
         );
     }
@@ -77,6 +83,15 @@ public class DayTrainingWorkoutLog {
     }
 
     public void calculateTrainingTime() {
-        timeTraining = ChronoUnit.MINUTES.between(createdAt, completedAt);
+        long totalMinutes = ChronoUnit.MINUTES.between(createdAt, completedAt);
+
+        if (totalMinutes < 60) {
+            timeTraining = totalMinutes + " min";
+        } else {
+            long hours = totalMinutes / 60;
+            long minutes = totalMinutes % 60;
+
+            timeTraining = hours + "h " + minutes + "min";
+        }
     }
 }

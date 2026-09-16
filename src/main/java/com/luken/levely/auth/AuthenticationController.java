@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/authentication")
@@ -37,8 +38,12 @@ public class AuthenticationController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<LoginUserResponseDTO> loginUser(@RequestBody LoginUserRequestDTO body) {
-        var token = authenticationService.loginUser(body);
-        return ResponseEntity.ok().body(new LoginUserResponseDTO(token));
+        Map<String, String> login = authenticationService.loginUser(body);
+
+        var token = login.get("token");
+        var name = login.get("name");
+
+        return ResponseEntity.ok().body(new LoginUserResponseDTO(token, name));
     }
 
 }
