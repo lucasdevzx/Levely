@@ -32,6 +32,12 @@ public class DayTrainingController {
         return ResponseEntity.ok().body(dayTrainingMapper.toDTO(dayTraining));
     }
 
+    @GetMapping(value = "/trainingplanner/{trainingPlannerId}/dayofweek")
+    public ResponseEntity<DayTrainingResponseDTO> findByTrainingPlannerIdAndDayOfWeek(@PathVariable UUID trainingPlannerId) {
+        var dayTraining = dayTrainingService.findByTrainingPlannerIdAndDayOfWeek(trainingPlannerId);
+        return ResponseEntity.ok().body(dayTrainingMapper.toDTO(dayTraining));
+    }
+
     @PutMapping(value = "/{dayTrainingId}")
     public ResponseEntity<DayTrainingResponseDTO> updateDayTraining(@PathVariable UUID dayTrainingId, @RequestBody DayTrainingRequestDTO body) {
         var dayTraining = dayTrainingService.updateDayTraining(dayTrainingId, body);

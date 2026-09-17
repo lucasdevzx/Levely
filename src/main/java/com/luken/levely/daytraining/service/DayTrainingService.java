@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +36,13 @@ public class DayTrainingService {
           return dayTrainingRepository.findById(dayTrainingId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Entity day training not found by id: " + dayTrainingId), ApiError.RESOURCE_NOT_FOUND));
+    }
+
+    public DayTraining findByTrainingPlannerIdAndDayOfWeek(UUID trainingPlannerId) {
+        var dayOfWeek = DayOfWeek.of(java.time.LocalDate.now().getDayOfWeek().getValue());
+        return dayTrainingRepository.findByTrainingPlannerIdAndDayOfWeek(trainingPlannerId, dayOfWeek)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Entity day training not found by training planner id: " + trainingPlannerId + " and day of week: " + dayOfWeek), ApiError.RESOURCE_NOT_FOUND));
     }
 
     public DayTraining updateDayTraining(UUID dayTrainingId, DayTrainingRequestDTO body) {
