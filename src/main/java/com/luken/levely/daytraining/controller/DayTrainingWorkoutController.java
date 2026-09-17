@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,16 +21,22 @@ public class DayTrainingWorkoutController {
     private final DayTrainingWorkoutService dayTrainingWorkoutService;
     private final DayTrainingWorkoutMapper dayTrainingWorkoutMapper;
 
-    @GetMapping(value = "/{dayTrainingWorkoutId}")
-    public ResponseEntity<DayTrainingWorkoutResponseDTO> findById(@PathVariable UUID dayTrainingWorkoutId) {
-        var dayTrainingWorkout = dayTrainingWorkoutService.findById(dayTrainingWorkoutId);
-        return ResponseEntity.ok().body(dayTrainingWorkoutMapper.toDTO(dayTrainingWorkout));
-    }
-
     @GetMapping
     public ResponseEntity<Page<DayTrainingWorkoutResponseDTO>> findAll(@RequestParam int page, @RequestParam int size) {
         Page<DayTrainingWorkout> dayTrainingWorkouts = dayTrainingWorkoutService.findAll(page, size);
         return ResponseEntity.ok().body(dayTrainingWorkouts.map(dayTrainingWorkoutMapper::toDTO));
+    }
+
+    @GetMapping(value = "/daytraining/{dayTrainingId}")
+    public ResponseEntity<List<DayTrainingWorkoutResponseDTO>> findAllByDayTrainingId(@PathVariable UUID dayTrainingId) {
+        var dayTrainingWorkouts = dayTrainingWorkoutService.findAllByDayTrainingId(dayTrainingId);
+        return ResponseEntity.ok().body(dayTrainingWorkouts.stream().map(dayTrainingWorkoutMapper::toDTO).toList());
+    }
+
+    @GetMapping(value = "/{dayTrainingWorkoutId}")
+    public ResponseEntity<DayTrainingWorkoutResponseDTO> findById(@PathVariable UUID dayTrainingWorkoutId) {
+        var dayTrainingWorkout = dayTrainingWorkoutService.findById(dayTrainingWorkoutId);
+        return ResponseEntity.ok().body(dayTrainingWorkoutMapper.toDTO(dayTrainingWorkout));
     }
 
     @PostMapping(value = "/{dayTrainingId}/{workoutId}")

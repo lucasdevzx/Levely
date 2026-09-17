@@ -19,8 +19,10 @@ public interface DayTrainingWorkoutLogRepository extends JpaRepository<DayTraini
 
     Optional<List<DayTrainingWorkoutLog>> findAllByCompletedTrueOrderByCreatedAtDesc();
 
-    Optional<List<DayTrainingWorkoutLog>> findAllByCreatedAtBetween(LocalDateTime createdAt, LocalDateTime createdAt2);
+    Optional<List<DayTrainingWorkoutLog>> findAllByDayTrainingWorkoutIdAndCreatedAtBetween(UUID dayTrainingWorkoutId, LocalDateTime createdAt, LocalDateTime createdAt2);
 
     Optional<DayTrainingWorkoutLog> findByDayTrainingWorkoutId(UUID dayTrainingWorkoutId);
+
+    Optional<List<DayTrainingWorkoutLog>> findAllByDayTrainingTrainingPlannerIdAndCreatedAtBetween(UUID trainingPlannerId, LocalDateTime createdAt, LocalDateTime createdAt2);
 
 }
