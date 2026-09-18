@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.luken.levely.daytraining.model.DayTrainingWorkout;
 import com.luken.levely.workout.dto.WorkoutRequestDTO;
 import com.luken.levely.user.User;
+import com.luken.levely.workout.enums.WorkoutType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,6 +34,10 @@ public class Workout {
     @NonNull
     @Column(name = "description")
     private String description;
+
+    @NonNull
+    @Column(name = "workout_type")
+    private WorkoutType workoutType;
 
     @Column(name = "recomended_weight_increment")
     private Double recommendedWeightIncrement = 2.5;
@@ -64,6 +69,7 @@ public class Workout {
         return new Workout(
                 body.name(),
                 body.description(),
+                body.workoutType(),
                 body.orderIndex(),
                 user
         );

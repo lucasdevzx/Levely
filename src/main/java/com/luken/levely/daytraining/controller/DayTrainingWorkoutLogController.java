@@ -39,9 +39,9 @@ public class DayTrainingWorkoutLogController {
         return ResponseEntity.ok().body(dayTrainingWorkoutLogs.map(dayTrainingWorkoutLogMapper::toDTO));
     }
 
-    @GetMapping(value = "/completed")
-    public ResponseEntity<List<DayTrainingWorkoutLogResponseDTO>> findAllByCompletedTrue() {
-        List<DayTrainingWorkoutLog> dayTrainingWorkoutLogs = dayTrainingWorkoutLogService.findAllByCompletedTrue();
+    @GetMapping(value = "/trainingplanner/{trainingPlannerId}/completed")
+    public ResponseEntity<List<DayTrainingWorkoutLogResponseDTO>> findAllByCompletedTrueByMonth(@PathVariable UUID trainingPlannerId) {
+        List<DayTrainingWorkoutLog> dayTrainingWorkoutLogs = dayTrainingWorkoutLogService.findAllByCompletedTrueByMonth(trainingPlannerId);
         return ResponseEntity.ok().body(dayTrainingWorkoutLogMapper.toDTOs(dayTrainingWorkoutLogs));
     }
 

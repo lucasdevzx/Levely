@@ -1,5 +1,6 @@
 package com.luken.levely.workout.repository;
 
+import com.luken.levely.workout.enums.WorkoutType;
 import com.luken.levely.workout.model.Workout;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,7 @@ public interface WorkoutRepository extends JpaRepository<Workout, UUID> {
 
     Optional<List<Workout>> findAllByDayTrainingWorkoutsId(UUID dayTrainingWorkoutId);
 
+    Page<Workout> findAllByUserIdAndWorkoutType(UUID userId, WorkoutType workoutType, Pageable pageable);
+
+    Page<Workout> findAllByWorkoutType(WorkoutType workoutType, Pageable pageable);
 }

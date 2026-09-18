@@ -3,6 +3,7 @@ package com.luken.levely.workout.service;
 import com.luken.levely.common.exception.ResourceNotFoundException;
 import com.luken.levely.common.exception.controller.ApiError;
 import com.luken.levely.workout.dto.WorkoutRequestDTO;
+import com.luken.levely.workout.enums.WorkoutType;
 import com.luken.levely.workout.mapper.WorkoutMapper;
 import com.luken.levely.workout.model.Workout;
 import com.luken.levely.workout.repository.WorkoutRepository;
@@ -27,6 +28,16 @@ public class WorkoutService {
     public Page<Workout> findAll(int page, int size) {
         return workoutRepository
                 .findAll(PageRequest.of(page, size));
+    }
+
+    public Page<Workout> findAllMe(int page, int size) {
+        var user = authenticatedUser.getAuthenticatedUser();
+        var userId = user.getId();
+        return workoutRepository.findAllByUserIdAndWorkoutType(userId, WorkoutType.USER, PageRequest.of(page, size));
+    }
+
+    public Page<Workout> findAllByWorkoutType(WorkoutType workoutType, int page, int size) {
+        return workoutRepository.findAllByWorkoutType(workoutType, PageRequest.of(page, size));
     }
 
     public List<Workout> findAllByDayTrainingWorkoutId(UUID dayTrainingWorkoutId) {

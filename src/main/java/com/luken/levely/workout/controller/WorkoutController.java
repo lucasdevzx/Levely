@@ -2,6 +2,7 @@ package com.luken.levely.workout.controller;
 
 import com.luken.levely.workout.dto.WorkoutRequestDTO;
 import com.luken.levely.workout.dto.WorkoutResponseDTO;
+import com.luken.levely.workout.enums.WorkoutType;
 import com.luken.levely.workout.mapper.WorkoutMapper;
 import com.luken.levely.workout.model.Workout;
 import com.luken.levely.workout.service.WorkoutService;
@@ -25,6 +26,18 @@ public class WorkoutController {
     @GetMapping
     public ResponseEntity<Page<WorkoutResponseDTO>> findAll(@RequestParam int page, @RequestParam int size) {
         Page<Workout> workouts = workoutService.findAll(page, size);
+        return ResponseEntity.ok().body(workouts.map(workoutMapper::toDTO));
+    }
+
+    @GetMapping(value = "/me")
+    public ResponseEntity<Page<WorkoutResponseDTO>> findAllMe(@RequestParam int page, @RequestParam int size) {
+        Page<Workout> workouts = workoutService.findAllMe(page, size);
+        return ResponseEntity.ok().body(workouts.map(workoutMapper::toDTO));
+    }
+
+    @GetMapping(value = "/type/{workoutType}")
+    public ResponseEntity<Page<WorkoutResponseDTO>> findAllByWorkoutType(@PathVariable WorkoutType workoutType, @RequestParam int page, @RequestParam int size) {
+        Page<Workout> workouts = workoutService.findAllByWorkoutType(workoutType, page, size);
         return ResponseEntity.ok().body(workouts.map(workoutMapper::toDTO));
     }
 

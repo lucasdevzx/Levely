@@ -41,8 +41,11 @@ public class DayTrainingWorkoutLogService {
         return dayTrainingWorkoutLogRepository.findAll(PageRequest.of(page, size));
     }
 
-    public List<DayTrainingWorkoutLog> findAllByCompletedTrue() {
-        return dayTrainingWorkoutLogRepository.findAllByCompletedTrueOrderByCreatedAtDesc()
+    public List<DayTrainingWorkoutLog> findAllByCompletedTrueByMonth(UUID trainingPlannerId) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.with(TemporalAdjusters.firstDayOfMonth());
+
+        return dayTrainingWorkoutLogRepository.findAllByDayTrainingTrainingPlannerIdAndCompletedTrueAndCreatedAtBetween(trainingPlannerId, startDate, endDate)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Entity day training workout log not found", ApiError.RESOURCE_NOT_FOUND));
     }
